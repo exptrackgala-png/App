@@ -63,6 +63,7 @@ button{
   font-size:16px;
   font-weight:600;
   cursor:pointer;
+  margin-bottom:10px;
 }
 
 .btn-primary{background:var(--primary);color:#fff}
@@ -73,6 +74,7 @@ button{
   width:60px;
   background:#0b4f8a;
   color:#fff;
+  margin-bottom:0;
 }
 
 .overlay{
@@ -133,22 +135,6 @@ th{background:#f3f4f6}
 </head>
 
 <body>
-<form
-  id="rtcForm"
-  method="POST"
-  action="https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec"
-  target="rtcFrame"
-  style="display:none"
->
-  <input type="hidden" name="action" value="sendRTCEmail">
-  <input type="hidden" name="storeCode" id="fStoreCode">
-  <input type="hidden" name="storeName" id="fStoreName">
-  <input type="hidden" name="week" id="fWeek">
-  <input type="hidden" name="submissionMonth" id="fMonth">
-</form>
-
-<iframe name="rtcFrame" style="display:none"></iframe>
-
 <div class="app">
 <header id="headerText">Select Store & Week</header>
 
@@ -236,7 +222,7 @@ th{background:#f3f4f6}
 
     <br>
     <button class="btn-primary" onclick="submitRTC()">Submit</button>
-    <br><br>
+    <br>
     <button class="btn-secondary" onclick="closeRTC()">Cancel</button>
   </div>
 </div>
@@ -246,176 +232,257 @@ th{background:#f3f4f6}
   <video id="scannerVideo"></video>
 </div>
 
+<!-- ✅ Hidden form for RTC email — uses iframe target to avoid CORS preflight -->
+<form
+  id="rtcForm"
+  method="POST"
+  action="https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec"
+  target="rtcFrame"
+  style="display:none"
+>
+  <input type="hidden" name="action" value="sendRTCEmail">
+  <input type="hidden" name="storeCode" id="fStoreCode">
+  <input type="hidden" name="storeName" id="fStoreName">
+  <input type="hidden" name="week" id="fWeek">
+  <input type="hidden" name="submissionMonth" id="fMonth">
+</form>
+<iframe name="rtcFrame" style="display:none"></iframe>
+
+<!-- ✅ Hidden form for item submission — same CORS-safe pattern -->
+<form
+  id="itemForm"
+  method="POST"
+  action="https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec"
+  target="itemFrame"
+  style="display:none"
+>
+  <input type="hidden" name="storeCode"   id="iStoreCode">
+  <input type="hidden" name="storeName"   id="iStoreName">
+  <input type="hidden" name="week"        id="iWeek">
+  <input type="hidden" name="article"     id="iArticle">
+  <input type="hidden" name="barcode"     id="iBarcode">
+  <input type="hidden" name="description" id="iDescription">
+  <input type="hidden" name="department"  id="iDepartment">
+  <input type="hidden" name="stock"       id="iStock">
+  <input type="hidden" name="expiry"      id="iExpiry">
+</form>
+<iframe name="itemFrame" style="display:none"></iframe>
+
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec";
 
-let articles=[], currentRTCData=[];
+let articles = [], currentRTCData = [];
 const reader = new ZXing.BrowserMultiFormatReader();
 
-/* INIT */
-window.onload = async ()=>{
+/* ── INIT ── */
+window.onload = async () => {
   await loadStores();
   await loadArticles();
 };
 
-/* STORES */
-async function loadStores(){
-  const r = await fetch(API_URL+"?action=stores");
-  const d = await r.json();
-  storeSelect.innerHTML='<option value="">Select Store</option>';
-  d.forEach(s=>{
-    const o=document.createElement("option");
-    o.value=s[0]; o.textContent=s[1];
-    storeSelect.appendChild(o);
-  });
+/* ── STORES ──
+   Simple GET — no preflight, works fine with fetch */
+async function loadStores() {
+  try {
+    const r = await fetch(API_URL + "?action=stores");
+    const d = await r.json();
+    storeSelect.innerHTML = '<option value="">Select Store</option>';
+    d.forEach(s => {
+      const o = document.createElement("option");
+      o.value = s[0];
+      o.textContent = s[1];
+      storeSelect.appendChild(o);
+    });
+  } catch (err) {
+    alert("Could not load stores: " + err.message);
+  }
 }
 
-/* NAV */
-function goToEntry(){
-  if(!storeSelect.value || !weekSelect.value){
-    alert("Select store and week"); return;
+/* ── NAVIGATION ── */
+function goToEntry() {
+  if (!storeSelect.value || !weekSelect.value) {
+    alert("Select store and week");
+    return;
   }
   headerText.innerText =
     storeSelect.options[storeSelect.selectedIndex].text +
     " · " + weekSelect.value;
-  storePage.style.display="none";
-  entryPage.style.display="block";
+  storePage.style.display = "none";
+  entryPage.style.display = "block";
 }
 
-function backToStore(){
-  storePage.style.display="block";
-  entryPage.style.display="none";
-  headerText.innerText="Select Store & Week";
+function backToStore() {
+  storePage.style.display = "block";
+  entryPage.style.display = "none";
+  headerText.innerText = "Select Store & Week";
 }
 
-/* ARTICLES */
-async function loadArticles(){
-  const r=await fetch(API_URL+"?action=articles");
-  const d=await r.json();
-  articles=d.map(a=>({
-    article:String(a[0]),
-    barcode:String(a[1]),
-    desc:String(a[2]),
-    dept:String(a[3]||"")
-  }));
+/* ── ARTICLES ──
+   Simple GET — no preflight */
+async function loadArticles() {
+  try {
+    const r = await fetch(API_URL + "?action=articles");
+    const d = await r.json();
+    articles = d.map(a => ({
+      article: String(a[0]),
+      barcode: String(a[1]),
+      desc:    String(a[2]),
+      dept:    String(a[3] || "")
+    }));
+  } catch (err) {
+    console.error("Could not load articles:", err);
+  }
 }
 
-articleInput.oninput=()=>{
-  const m=articles.find(a=>a.article===articleInput.value.trim());
-  if(m){
-    barcodeInput.value=m.barcode;
-    descInput.value=m.desc;
-    deptInput.value=m.dept;
+articleInput.oninput = () => {
+  const m = articles.find(a => a.article === articleInput.value.trim());
+  if (m) {
+    barcodeInput.value = m.barcode;
+    descInput.value    = m.desc;
+    deptInput.value    = m.dept;
   }
 };
 
-barcodeInput.oninput=()=>{
-  const m=articles.find(a=>a.barcode===barcodeInput.value.trim());
-  if(m){
-    articleInput.value=m.article;
-    descInput.value=m.desc;
-    deptInput.value=m.dept;
+barcodeInput.oninput = () => {
+  const m = articles.find(a => a.barcode === barcodeInput.value.trim());
+  if (m) {
+    articleInput.value = m.article;
+    descInput.value    = m.desc;
+    deptInput.value    = m.dept;
   }
 };
 
-/* SUBMIT ITEM */
-async function submitEntry(){
-  if(!descInput.value||!stockInput.value||!expiryInput.value){
-    alert("Complete all fields"); return;
+/* ── SUBMIT ITEM ──
+   ✅ Uses hidden form POST → iframe to avoid CORS preflight entirely.
+   The Apps Script doPost receives it as e.parameter (URL-encoded). */
+function submitEntry() {
+  if (!descInput.value || !stockInput.value || !expiryInput.value) {
+    alert("Complete all fields");
+    return;
   }
-  await fetch(API_URL,{
-    method:"POST",
-    body:JSON.stringify({
-      storeCode:storeSelect.value,
-      storeName:storeSelect.options[storeSelect.selectedIndex].text,
-      week:weekSelect.value,
-      article:articleInput.value,
-      barcode:barcodeInput.value,
-      description:descInput.value,
-      department:deptInput.value,
-      stock:stockInput.value,
-      expiry:expiryInput.value
-    })
-  });
-  alert("✅ Item submitted");
-  articleInput.value=barcodeInput.value=descInput.value=deptInput.value="";
-  stockInput.value=expiryInput.value="";
+
+  // Fill hidden form fields
+  document.getElementById("iStoreCode").value   = storeSelect.value;
+  document.getElementById("iStoreName").value   = storeSelect.options[storeSelect.selectedIndex].text;
+  document.getElementById("iWeek").value        = weekSelect.value;
+  document.getElementById("iArticle").value     = articleInput.value;
+  document.getElementById("iBarcode").value     = barcodeInput.value;
+  document.getElementById("iDescription").value = descInput.value;
+  document.getElementById("iDepartment").value  = deptInput.value;
+  document.getElementById("iStock").value       = stockInput.value;
+  document.getElementById("iExpiry").value      = expiryInput.value;
+
+  // Submit via hidden form (no CORS issue)
+  document.getElementById("itemForm").submit();
+
+  // Clear fields immediately — server write happens async in iframe
+  setTimeout(() => {
+    alert("✅ Item submitted");
+    articleInput.value = barcodeInput.value = descInput.value = deptInput.value = "";
+    stockInput.value   = expiryInput.value  = "";
+  }, 600);
 }
+
+/* ── DATE FORMAT ── */
 function formatDateOnly(v) {
   if (!v) return "";
   const d = new Date(v);
   if (isNaN(d)) return "";
   return d.toLocaleDateString("en-GB"); // DD/MM/YYYY
 }
-/* RTC PREVIEW */
-async function openRTC(){
-  rtcPopup.style.display="flex";
-  rtcContent.innerHTML='<div class="spinner">Fetching data…</div>';
-  const ym=new Date().toISOString().slice(0,7);
-  const r=await fetch(
-    `${API_URL}?action=rtcPreview&storeCode=${storeSelect.value}&week=${weekSelect.value}&submissionMonth=${ym}`
-  );
-  const d=await r.json();
-  currentRTCData=d.rows||[];
-  if(currentRTCData.length===0){
-    rtcContent.innerHTML='<div class="spinner">No records found</div>';
+
+/* ── RTC PREVIEW ──
+   Simple GET — no preflight */
+async function openRTC() {
+  rtcPopup.style.display = "flex";
+  rtcContent.innerHTML   = '<div class="spinner">Fetching data…</div>';
+
+  const ym = new Date().toISOString().slice(0, 7);
+  try {
+    const r = await fetch(
+      `${API_URL}?action=rtcPreview` +
+      `&storeCode=${encodeURIComponent(storeSelect.value)}` +
+      `&week=${encodeURIComponent(weekSelect.value)}` +
+      `&submissionMonth=${ym}`
+    );
+    const d = await r.json();
+    currentRTCData = d.rows || [];
+
+    if (currentRTCData.length === 0) {
+      rtcContent.innerHTML = '<div class="spinner">No records found for this store / week / month.</div>';
+      return;
+    }
+
+    let html = `<table>
+      <tr>
+        <th>Article</th><th>Description</th>
+        <th>Dept</th><th>Stock</th><th>Expiry</th>
+      </tr>`;
+    currentRTCData.forEach(x => {
+      html += `<tr>
+        <td>${x.Article}</td>
+        <td>${x.Description}</td>
+        <td>${x.Department}</td>
+        <td>${x.Stock}</td>
+        <td>${formatDateOnly(x.ExpiryDate)}</td>
+      </tr>`;
+    });
+    html += "</table>";
+    rtcContent.innerHTML = html;
+
+  } catch (err) {
+    rtcContent.innerHTML = `<div class="spinner" style="color:red">Error loading data: ${err.message}</div>`;
+  }
+}
+
+function closeRTC() {
+  rtcPopup.style.display = "none";
+}
+
+/* ── SEND RTC EMAIL ──
+   ✅ Uses hidden form POST → iframe (same CORS-safe pattern).
+   Apps Script doPost receives body as e.parameter. */
+function submitRTC() {
+  if (currentRTCData.length === 0) {
+    alert("No data to submit.");
     return;
   }
-  let html="<table><tr><th>Article</th><th>Description</th><th>Dept</th><th>Stock</th><th>Expiry</th></tr>";
-  currentRTCData.forEach(x=>{
-    html+=`<tr>
-      <td>${x.Article}</td>
-      <td>${x.Description}</td>
-      <td>${x.Department}</td>
-      <td>${x.Stock}</td>
-      <td>${formatDateOnly(x.ExpiryDate)}</td>
-    </tr>`;
-  });
-  html+="</table>";
-  rtcContent.innerHTML=html;
-}
 
-function closeRTC(){
-  rtcPopup.style.display="none";
-}
-
-/* SEND EMAIL */
-function submitRTC() {
-  // ✅ Fill hidden form values
+  // Fill hidden form
   document.getElementById("fStoreCode").value = storeSelect.value;
   document.getElementById("fStoreName").value =
     storeSelect.options[storeSelect.selectedIndex].text;
-  document.getElementById("fWeek").value = weekSelect.value;
-  document.getElementById("fMonth").value =
-    new Date().toISOString().slice(0, 7);
+  document.getElementById("fWeek").value  = weekSelect.value;
+  document.getElementById("fMonth").value = new Date().toISOString().slice(0, 7);
 
-  // ✅ Show spinner / progress
-  rtcContent.innerHTML =
-    '<div class="spinner">Sending submission mail…</div>';
+  // Show progress
+  rtcContent.innerHTML = '<div class="spinner">Sending submission mail…</div>';
 
-  // ✅ Submit form (NO fetch, NO CORS)
+  // Submit form into hidden iframe (fire-and-forget, no CORS)
   document.getElementById("rtcForm").submit();
 
-  // ✅ User feedback (email happens server-side)
+  // Give the server ~2 s then confirm to user
   setTimeout(() => {
     alert("✅ Submission mail sent to Buyer and Area Manager");
     closeRTC();
-  }, 1500);
+  }, 2000);
 }
-/* SCANNER */
-async function openScanner(){
-  scannerOverlay.style.display="flex";
-  await reader.decodeFromVideoDevice(null,"scannerVideo",(res)=>{
-    if(res){
-      barcodeInput.value=res.text;
+
+/* ── SCANNER ── */
+async function openScanner() {
+  scannerOverlay.style.display = "flex";
+  await reader.decodeFromVideoDevice(null, "scannerVideo", (res) => {
+    if (res) {
+      barcodeInput.value = res.text;
       barcodeInput.dispatchEvent(new Event("input"));
       closeScanner();
     }
   });
 }
-function closeScanner(){
+
+function closeScanner() {
   reader.reset();
-  scannerOverlay.style.display="none";
+  scannerOverlay.style.display = "none";
 }
 </script>
 </body>
