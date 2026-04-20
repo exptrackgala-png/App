@@ -1,40 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Expiry Tracker</title>
+<title>Expiry Tracker – Store Entry</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ZXing Barcode Scanner -->
 <script src="https://unpkg.com/@zxing/library@latest"></script>
 
-
 <style>
 :root{
   --primary:#0f6cbd;
+  --danger:#dc2626;
   --bg:#f4f6f8;
   --card:#ffffff;
   --text:#1f2933;
-  --muted:#6b7280;
   --radius:14px;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:"Segoe UI",Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
-
-.app{
-  max-width:520px;
-  margin:auto;
-}
-
-/* ---------- HEADER ---------- */
+.app{max-width:520px;margin:auto}
 header{
   padding:20px;
   font-size:22px;
@@ -43,11 +33,8 @@ header{
   background:var(--primary);
   border-radius:0 0 18px 18px;
 }
-
-/* ---------- PAGES ---------- */
 .page{padding:20px}
 
-/* ---------- UI ---------- */
 .card{
   background:var(--card);
   border-radius:var(--radius);
@@ -56,12 +43,7 @@ header{
   box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
 
-label{
-  font-weight:600;
-  display:block;
-  margin-bottom:6px;
-}
-
+label{font-weight:600;display:block;margin-bottom:6px}
 input,select{
   width:100%;
   padding:12px;
@@ -69,94 +51,115 @@ input,select{
   border:1px solid #ccc;
   font-size:15px;
 }
-
 input[readonly]{background:#eef2f6}
 
-.row{
-  display:flex;
-  gap:10px;
-}
+.row{display:flex;gap:10px}
 
 button{
   width:100%;
   padding:15px;
   border:none;
   border-radius:12px;
-  background:var(--primary);
-  color:#fff;
   font-size:16px;
   font-weight:600;
   cursor:pointer;
 }
 
-.secondary{
-  background:#e5e7eb;
-  color:#333;
-}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-secondary{background:#e5e7eb;color:#333}
+.btn-danger{background:var(--danger);color:#fff}
 
-/* ---------- SCANNER ---------- */
 .icon-btn{
   width:60px;
   background:#0b4f8a;
+  color:#fff;
 }
 
-#scannerOverlay{
+.overlay{
   position:fixed;
   inset:0;
-  background:black;
+  background:rgba(0,0,0,.55);
   display:none;
+  align-items:center;
+  justify-content:center;
   z-index:9999;
 }
 
-#scannerVideo{
+.popup{
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  width:92%;
+  max-width:700px;
+  max-height:85vh;
+  overflow:auto;
+  box-shadow:0 25px 60px rgba(0,0,0,.4);
+}
+
+.popup h3{margin-top:0}
+.note{
+  color:#92400e;
+  background:#fffbeb;
+  border:1px solid #fde68a;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:14px;
+  font-size:14px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+th,td{
+  border:1px solid #d1d5db;
+  padding:6px 8px;
+}
+th{background:#f3f4f6}
+
+.spinner{
+  text-align:center;
+  padding:20px;
+  font-weight:600;
+}
+
+#scannerOverlay video{
   width:100%;
   height:100%;
   object-fit:cover;
-}
-
-#scannerClose{
-  position:absolute;
-  top:14px;
-  right:14px;
-  background:red;
-  border:none;
-  padding:10px 14px;
-  color:white;
-  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
+<header id="headerText">Select Store & Week</header>
 
-<header id="headerText">Select Store</header>
-
-<!-- ================= STORE PAGE ================= -->
+<!-- PAGE 1 -->
 <div id="storePage" class="page">
   <div class="card">
     <label>Store</label>
-    <select id="storeSelect">
-      <option>Loading stores…</option>
-    </select>
+    <select id="storeSelect"></select>
   </div>
-  <button onclick="goToEntry()">Continue</button>
-</div>
 
-<!-- ================= ENTRY PAGE ================= -->
-<div id="entryPage" class="page" style="display:none">
-<!-- ✅ EXPIRY WEEK AS DROPDOWN -->
   <div class="card">
     <label>Expiry Week</label>
     <select id="weekSelect">
-      <option value="">Select expiry week</option>
-      <option value="Week 1 (1–7)">Week 1 (1–7)</option>
-      <option value="Week 2 (8–14)">Week 2 (8–14)</option>
-      <option value="Week 3 (15–21)">Week 3 (15–21)</option>
-      <option value="Week 4 (22–31)">Week 4 (22–31)</option>
+      <option value="">Select Week</option>
+      <option>Week 1 (1–7)</option>
+      <option>Week 2 (8–14)</option>
+      <option>Week 3 (15–21)</option>
+      <option>Week 4 (22–31)</option>
     </select>
   </div>
+
+  <button class="btn-primary" onclick="goToEntry()">Continue</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="entryPage" class="page" style="display:none">
+
   <div class="card">
     <label>Article Code</label>
     <input id="articleInput">
@@ -175,7 +178,11 @@ button{
     <input id="descInput" readonly>
   </div>
 
- 
+  <div class="card">
+    <label>Department</label>
+    <input id="deptInput" readonly>
+  </div>
+
   <div class="card row">
     <div style="flex:1">
       <label>Stock</label>
@@ -187,41 +194,74 @@ button{
     </div>
   </div>
 
-  <button onclick="submitEntry()">Submit</button>
-  <button class="secondary" onclick="backToStore()">Change Store</button>
+  <button class="btn-primary" onclick="submitEntry()">Submit Item</button>
 
+  <button class="btn-danger" onclick="openRTC()">
+    SUBMIT THIS WEEK RTC DETAILS
+  </button>
+
+  <button class="btn-secondary" onclick="backToStore()">
+    Change Store / Week
+  </button>
+</div>
 </div>
 
+<!-- RTC POPUP -->
+<div class="overlay" id="rtcPopup">
+  <div class="popup">
+    <h3>RTC Submission Preview</h3>
+    <div class="note">
+      <b>Submission Mail will be sent to Buyer and Area Manager</b>
+    </div>
+
+    <div id="rtcContent">
+      <div class="spinner">Loading RTC items…</div>
+    </div>
+
+    <br>
+    <button class="btn-primary" onclick="submitRTC()">Submit</button>
+    <br><br>
+    <button class="btn-secondary" onclick="closeRTC()">Cancel</button>
+  </div>
 </div>
 
-<!-- ================= CAMERA ================= -->
-<div id="scannerOverlay">
-  <button id="scannerClose" onclick="closeScanner()">✕</button>
+<!-- SCANNER -->
+<div id="scannerOverlay" class="overlay">
   <video id="scannerVideo"></video>
 </div>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec";
-let articles = [];
+
+let articles=[], currentRTCData=[];
 const reader = new ZXing.BrowserMultiFormatReader();
 
-/* ---------- STORES ---------- */
+/* INIT */
+window.onload = async ()=>{
+  await loadStores();
+  await loadArticles();
+};
+
+/* STORES */
 async function loadStores(){
-  const r = await fetch(`${API_URL}?action=stores`);
-  const data = await r.json();
-  storeSelect.innerHTML='<option value="">Select store</option>';
-  data.forEach(row=>{
+  const r = await fetch(API_URL+"?action=stores");
+  const d = await r.json();
+  storeSelect.innerHTML='<option value="">Select Store</option>';
+  d.forEach(s=>{
     const o=document.createElement("option");
-    o.value=row[0];
-    o.textContent=row[1];
+    o.value=s[0]; o.textContent=s[1];
     storeSelect.appendChild(o);
   });
 }
 
+/* NAV */
 function goToEntry(){
-  if(!storeSelect.value){alert("Select store");return;}
+  if(!storeSelect.value || !weekSelect.value){
+    alert("Select store and week"); return;
+  }
   headerText.innerText =
-    storeSelect.options[storeSelect.selectedIndex].text;
+    storeSelect.options[storeSelect.selectedIndex].text +
+    " · " + weekSelect.value;
   storePage.style.display="none";
   entryPage.style.display="block";
 }
@@ -229,38 +269,126 @@ function goToEntry(){
 function backToStore(){
   storePage.style.display="block";
   entryPage.style.display="none";
+  headerText.innerText="Select Store & Week";
 }
 
-/* ---------- ARTICLES ---------- */
+/* ARTICLES */
 async function loadArticles(){
-  const r = await fetch(`${API_URL}?action=articles`);
-  const data = await r.json();
-  articles = data.map(a=>({
-    article:String(a[0]).trim(),
-    barcode:String(a[1]).trim(),
-    desc:String(a[2]).trim()
+  const r=await fetch(API_URL+"?action=articles");
+  const d=await r.json();
+  articles=d.map(a=>({
+    article:String(a[0]),
+    barcode:String(a[1]),
+    desc:String(a[2]),
+    dept:String(a[3]||"")
   }));
 }
 
 articleInput.oninput=()=>{
-  const m = articles.find(a=>a.article===articleInput.value.trim());
+  const m=articles.find(a=>a.article===articleInput.value.trim());
   if(m){
     barcodeInput.value=m.barcode;
     descInput.value=m.desc;
+    deptInput.value=m.dept;
   }
 };
 
 barcodeInput.oninput=()=>{
-  const m = articles.find(a=>a.barcode===barcodeInput.value.trim());
+  const m=articles.find(a=>a.barcode===barcodeInput.value.trim());
   if(m){
     articleInput.value=m.article;
     descInput.value=m.desc;
+    deptInput.value=m.dept;
   }
 };
 
-/* ---------- SCANNER ---------- */
+/* SUBMIT ITEM */
+async function submitEntry(){
+  if(!descInput.value||!stockInput.value||!expiryInput.value){
+    alert("Complete all fields"); return;
+  }
+  await fetch(API_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      storeCode:storeSelect.value,
+      storeName:storeSelect.options[storeSelect.selectedIndex].text,
+      week:weekSelect.value,
+      article:articleInput.value,
+      barcode:barcodeInput.value,
+      description:descInput.value,
+      department:deptInput.value,
+      stock:stockInput.value,
+      expiry:expiryInput.value
+    })
+  });
+  alert("✅ Item submitted");
+  articleInput.value=barcodeInput.value=descInput.value=deptInput.value="";
+  stockInput.value=expiryInput.value="";
+}
+function formatDateOnly(v) {
+  if (!v) return "";
+  const d = new Date(v);
+  if (isNaN(d)) return "";
+  return d.toLocaleDateString("en-GB"); // DD/MM/YYYY
+}
+/* RTC PREVIEW */
+async function openRTC(){
+  rtcPopup.style.display="flex";
+  rtcContent.innerHTML='<div class="spinner">Fetching data…</div>';
+  const ym=new Date().toISOString().slice(0,7);
+  const r=await fetch(
+    `${API_URL}?action=rtcPreview&storeCode=${storeSelect.value}&week=${weekSelect.value}&submissionMonth=${ym}`
+  );
+  const d=await r.json();
+  currentRTCData=d.rows||[];
+  if(currentRTCData.length===0){
+    rtcContent.innerHTML='<div class="spinner">No records found</div>';
+    return;
+  }
+  let html="<table><tr><th>Article</th><th>Description</th><th>Dept</th><th>Stock</th><th>Expiry</th></tr>";
+  currentRTCData.forEach(x=>{
+    html+=`<tr>
+      <td>${x.Article}</td>
+      <td>${x.Description}</td>
+      <td>${x.Department}</td>
+      <td>${x.Stock}</td>
+      <td>${formatDateOnly(x.ExpiryDate)}</td>
+    </tr>`;
+  });
+  html+="</table>";
+  rtcContent.innerHTML=html;
+}
+
+function closeRTC(){
+  rtcPopup.style.display="none";
+}
+
+/* SEND EMAIL */
+async function submitRTC(){
+  rtcContent.innerHTML='<div class="spinner">Sending email…</div>';
+  const ym=new Date().toISOString().slice(0,7);
+  const r=await fetch(API_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      action:"sendRTCEmail",
+      storeCode:storeSelect.value,
+      storeName:storeSelect.options[storeSelect.selectedIndex].text,
+      week:weekSelect.value,
+      submissionMonth:ym
+    })
+  });
+  const j=await r.json();
+  if(j.success){
+    alert("✅ RTC email sent");
+    closeRTC();
+  }else{
+    alert(j.message||"Error");
+  }
+}
+
+/* SCANNER */
 async function openScanner(){
-  scannerOverlay.style.display="block";
+  scannerOverlay.style.display="flex";
   await reader.decodeFromVideoDevice(null,"scannerVideo",(res)=>{
     if(res){
       barcodeInput.value=res.text;
@@ -269,49 +397,10 @@ async function openScanner(){
     }
   });
 }
-
 function closeScanner(){
   reader.reset();
   scannerOverlay.style.display="none";
 }
-
-/* ---------- SUBMIT ---------- */
-function getWeek(){
-  return weekSelect.value;
-}
-
-async function submitEntry(){
-  if(!descInput.value){alert("Invalid article/barcode");return;}
-  if(!getWeek()){alert("Select expiry week");return;}
-
-  const payload={
-    storeCode:storeSelect.value,
-    storeName:storeSelect.options[storeSelect.selectedIndex].text,
-    week:getWeek(),
-    article:articleInput.value,
-    barcode:barcodeInput.value,
-    description:descInput.value,
-    stock:stockInput.value,
-    expiry:expiryInput.value
-  };
-
-  await fetch(API_URL,{method:"POST",body:JSON.stringify(payload)});
-  alert("✅ Submitted");
-
-  articleInput.value="";
-  barcodeInput.value="";
-  descInput.value="";
-  stockInput.value="";
-  expiryInput.value="";
-  weekSelect.value="";
-}
-
-/* ---------- INIT ---------- */
-window.onload=async()=>{
-  await loadStores();
-  await loadArticles();
-};
 </script>
-
 </body>
 </html>
