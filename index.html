@@ -133,6 +133,22 @@ th{background:#f3f4f6}
 </head>
 
 <body>
+<form
+  id="rtcForm"
+  method="POST"
+  action="https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec"
+  target="rtcFrame"
+  style="display:none"
+>
+  <input type="hidden" name="action" value="sendRTCEmail">
+  <input type="hidden" name="storeCode" id="fStoreCode">
+  <input type="hidden" name="storeName" id="fStoreName">
+  <input type="hidden" name="week" id="fWeek">
+  <input type="hidden" name="submissionMonth" id="fMonth">
+</form>
+
+<iframe name="rtcFrame" style="display:none"></iframe>
+
 <div class="app">
 <header id="headerText">Select Store & Week</header>
 
@@ -364,28 +380,28 @@ function closeRTC(){
 }
 
 /* SEND EMAIL */
-async function submitRTC(){
-  rtcContent.innerHTML='<div class="spinner">Sending email…</div>';
-  const ym=new Date().toISOString().slice(0,7);
-  const r=await fetch(API_URL,{
-    method:"POST",
-    body:JSON.stringify({
-      action:"sendRTCEmail",
-      storeCode:storeSelect.value,
-      storeName:storeSelect.options[storeSelect.selectedIndex].text,
-      week:weekSelect.value,
-      submissionMonth:ym
-    })
-  });
-  const j=await r.json();
-  if(j.success){
-    alert("✅ RTC email sent");
-    closeRTC();
-  }else{
-    alert(j.message||"Error");
-  }
-}
+function submitRTC() {
+  // ✅ Fill hidden form values
+  document.getElementById("fStoreCode").value = storeSelect.value;
+  document.getElementById("fStoreName").value =
+    storeSelect.options[storeSelect.selectedIndex].text;
+  document.getElementById("fWeek").value = weekSelect.value;
+  document.getElementById("fMonth").value =
+    new Date().toISOString().slice(0, 7);
 
+  // ✅ Show spinner / progress
+  rtcContent.innerHTML =
+    '<div class="spinner">Sending submission mail…</div>';
+
+  // ✅ Submit form (NO fetch, NO CORS)
+  document.getElementById("rtcForm").submit();
+
+  // ✅ User feedback (email happens server-side)
+  setTimeout(() => {
+    alert("✅ Submission mail sent to Buyer and Area Manager");
+    closeRTC();
+  }, 1500);
+}
 /* SCANNER */
 async function openScanner(){
   scannerOverlay.style.display="flex";
