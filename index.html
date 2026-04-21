@@ -2,640 +2,611 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Expiry Tracker</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Expiry Tracker – Gala Markets</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/@zxing/library@latest"></script>
 <style>
 :root {
-  --ink:     #0d1117;
-  --paper:   #f7f5f0;
-  --card:    #ffffff;
-  --accent:  #d4420a;
-  --accent2: #1a6b3c;
-  --muted:   #6b7280;
-  --border:  #e2ddd6;
-  --warn:    #b45309;
-  --radius:  16px;
+  --bg:       #f0f2f5;
+  --card:     #ffffff;
+  --border:   #e4e7ec;
+  --primary:  #222d65;
+  --primary-l:#e8f5ee;
+  --accent:   #e85d04;
+  --accent-l: #fff4ee;
+  --text:     #111827;
+  --muted:    #6b7280;
+  --soft:     #9ca3af;
+  --danger:   #dc2626;
+  --danger-l: #fef2f2;
+  --green:    #16a34a;
+  --r:        12px;
+  --shadow:   0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.05);
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--paper);
-  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
+.shell { max-width: 460px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
 
-.shell {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--primary);
+  padding: 14px 18px;
+  display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
 }
-
-/* ── TOP BAR ── */
-.top-bar {
-  background: var(--ink);
-  padding: 22px 24px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.top-bar-inner { display: flex; align-items: center; gap: 14px; }
-.logo-mark {
-  width: 38px; height: 38px;
-  background: var(--accent);
-  border-radius: 10px;
+.logo {
+  width: 34px; height: 34px;
+  background: #fff;
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Syne', sans-serif;
-  font-weight: 800; font-size: 15px; color: #fff;
+  font-weight: 800; font-size: 13px;
+  color: var(--primary);
   flex-shrink: 0;
+  letter-spacing: -.5px;
 }
-.top-bar-label {
-  font-family: 'Syne', sans-serif;
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: rgba(255,255,255,.38); margin-bottom: 3px;
-}
-#headerText {
-  font-family: 'Syne', sans-serif;
-  font-size: 17px; font-weight: 700; color: #fff; line-height: 1.2;
-}
+.topbar-info { flex: 1; min-width: 0; }
+.topbar-brand { font-size: 10px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 1px; }
+#headerText { font-size: 15px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ── PAGES ── */
-.page { padding: 24px 20px; flex: 1; }
+/* ── PAGE ── */
+.page { padding: 20px 16px; flex: 1; }
 
-/* ── LABELS ── */
-.section-label {
-  font-family: 'Syne', sans-serif;
+/* ── HERO ── */
+.hero {
+  background: var(--primary);
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-bottom: 22px;
+  position: relative; overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; right: -20px; top: -20px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,.06);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.85);
   font-size: 10px; font-weight: 700;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 10px; margin-top: 22px;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 50px;
+  margin-bottom: 10px;
 }
-.section-label:first-child { margin-top: 0; }
+.hero h1 { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 6px; }
+.hero p  { font-size: 13px; color: rgba(255,255,255,.6); font-weight: 400; line-height: 1.5; }
 
-/* ── FIELDS ── */
-.field {
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  transition: border-color .18s;
+/* ── SECTION LABEL ── */
+.slabel {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin: 18px 0 8px;
 }
-.field:focus-within { border-color: var(--ink); }
+.slabel:first-child { margin-top: 0; }
+
+/* ── CARD ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+/* ── FIELD ── */
+.field { padding: 12px 14px; transition: background .15s; }
+.field + .field { border-top: 1px solid var(--border); }
+.field:focus-within { background: #fafbff; }
 .field label {
-  display: block; font-size: 10px; font-weight: 600;
+  display: block; font-size: 10px; font-weight: 700;
   letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 5px;
+  color: var(--soft); margin-bottom: 4px;
 }
 .field input, .field select {
   width: 100%; border: none; outline: none;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px; font-weight: 500; color: var(--ink);
-  background: transparent; -webkit-appearance: none;
+  background: transparent;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px; font-weight: 500; color: var(--text);
+  -webkit-appearance: none;
 }
-.field input::placeholder { color: #c0bbb3; font-weight: 400; }
-.field input[readonly]    { color: var(--muted); font-weight: 400; }
-.field-row { display: flex; gap: 10px; }
+.field select option { background: #fff; color: var(--text); }
+.field input::placeholder { color: #d1d5db; font-weight: 400; }
+.field input[readonly] { color: var(--muted); font-weight: 400; }
+
+/* ── TWO COLUMN ── */
+.field-row { display: flex; }
 .field-row .field { flex: 1; }
+.field-row .field + .field { border-top: none; border-left: 1px solid var(--border); }
 
 /* ── BARCODE ROW ── */
-.barcode-wrap { display: flex; gap: 10px; align-items: flex-start; }
-.barcode-wrap .field { flex: 1; margin-bottom: 0; }
+.bc-row { display: flex; gap: 8px; align-items: stretch; margin-bottom: 10px; }
+.bc-row .card { flex: 1; margin-bottom: 0; }
 .scan-btn {
-  width: 52px; height: 52px;
-  background: var(--ink); border: none; border-radius: 14px;
-  color: #fff; cursor: pointer;
+  width: 48px;
+  background: var(--primary);
+  border: none; border-radius: var(--r);
+  color: #fff; font-size: 20px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: background .18s, transform .12s;
+  flex-shrink: 0; box-shadow: var(--shadow);
+  transition: opacity .15s, transform .1s;
 }
-.scan-btn:active { background: #333; transform: scale(.95); }
+.scan-btn:active { opacity: .8; transform: scale(.95); }
 
 /* ── BUTTONS ── */
 .btn {
-  width: 100%; padding: 16px; border: none;
-  border-radius: var(--radius);
-  font-family: 'Syne', sans-serif;
-  font-size: 14px; font-weight: 700; letter-spacing: .5px;
-  cursor: pointer; margin-bottom: 10px;
-  transition: opacity .15s, transform .12s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px 18px; border: none;
+  border-radius: var(--r); cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  margin-bottom: 8px;
+  transition: opacity .15s, transform .1s;
+  box-shadow: var(--shadow);
 }
 .btn:active { opacity: .85; transform: scale(.98); }
-.btn:disabled { opacity: .5; cursor: not-allowed; }
-.btn-primary  { background: var(--ink); color: #fff; }
-.btn-danger   { background: var(--accent); color: #fff; }
-.btn-outline  { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-danger  { background: var(--danger);  color: #fff; }
+.btn-ghost   { background: var(--card); color: var(--muted); border: 1px solid var(--border); box-shadow: none; }
 
-/* ── HERO ── */
-.hero-block {
-  background: var(--ink); border-radius: 20px;
-  padding: 28px 24px; margin-bottom: 24px;
-  position: relative; overflow: hidden;
-}
-.hero-block::before {
-  content: 'EXP';
-  position: absolute; right: -10px; top: -14px;
-  font-family: 'Syne', sans-serif;
-  font-size: 90px; font-weight: 800;
-  color: rgba(255,255,255,.04); line-height: 1; pointer-events: none;
-}
-.hero-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 26px; font-weight: 800; color: #fff;
-  line-height: 1.15; margin-bottom: 6px;
-}
-.hero-sub { font-size: 13px; color: rgba(255,255,255,.42); }
+/* ── DIVIDER ── */
+.divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: var(--soft); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
 
-/* ── WEEK PILLS ── */
-.week-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.week-pill {
-  background: var(--card); border: 2px solid var(--border);
-  border-radius: 14px; padding: 16px 12px;
-  cursor: pointer; transition: all .18s; text-align: center;
+/* ── STORE BAR ── */
+.store-bar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
 }
-.week-pill:hover { border-color: #aaa; }
-.week-pill.selected { border-color: var(--ink); background: var(--ink); color: #fff; }
-.pill-label { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; display: block; }
-.pill-range { font-size: 11px; color: var(--muted); display: block; margin-top: 2px; }
-.week-pill.selected .pill-range { color: rgba(255,255,255,.45); }
-
-/* ── STORE CHIP ── */
-.store-chip {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--card); border: 1.5px solid var(--border);
-  border-radius: 50px; padding: 8px 14px 8px 10px;
-  margin-bottom: 20px; width: fit-content;
+.store-bar-l { display: flex; align-items: center; gap: 9px; }
+.dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
+.store-name { font-size: 13px; font-weight: 600; }
+.week-badge {
+  font-size: 11px; font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-l);
+  border: 1px solid #c3e6d4;
+  border-radius: 6px; padding: 3px 10px;
 }
-.store-dot { width: 10px; height: 10px; background: var(--accent2); border-radius: 50%; }
-.store-chip-text { font-size: 13px; font-weight: 500; }
-
-.divider { height: 1px; background: var(--border); margin: 18px 0; }
 
 /* ── OVERLAY ── */
 .overlay {
   position: fixed; inset: 0;
-  background: rgba(13,17,23,.6);
+  background: rgba(17,24,39,.5);
   backdrop-filter: blur(4px);
   display: none; align-items: flex-end; justify-content: center;
   z-index: 9999;
 }
 .overlay.open { display: flex; }
 
-.popup {
-  background: var(--card); border-radius: 24px 24px 0 0;
-  padding: 24px 20px 36px; width: 100%; max-width: 480px;
-  max-height: 88vh; overflow-y: auto;
-  animation: slideUp .28s cubic-bezier(.22,1,.36,1);
+.sheet {
+  background: var(--card);
+  border-radius: 20px 20px 0 0;
+  padding: 18px 18px 34px;
+  width: 100%; max-width: 460px;
+  max-height: 90vh; overflow-y: auto;
+  animation: up .25s cubic-bezier(.22,1,.36,1);
+  border-top: 1px solid var(--border);
 }
-@keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-.popup-handle {
-  width: 40px; height: 4px; background: #ddd;
-  border-radius: 99px; margin: 0 auto 20px;
-}
-.popup-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px; font-weight: 800; margin-bottom: 4px;
-}
-.popup-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 99px; margin: 0 auto 18px; }
+.sheet-title { font-size: 18px; font-weight: 800; margin-bottom: 3px; }
+.sheet-sub   { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
 
+/* ── NOTICE ── */
 .notice {
-  background: #fffbeb; border: 1.5px solid #f6d860;
-  border-radius: 12px; padding: 12px 14px;
-  font-size: 13px; color: var(--warn); font-weight: 500;
-  margin-bottom: 16px; display: flex; gap: 8px;
+  background: var(--accent-l);
+  border: 1px solid #fcd9b6;
+  border-radius: 10px; padding: 11px 13px;
+  font-size: 12.5px; color: #9a3412;
+  font-weight: 500; margin-bottom: 14px;
+  display: flex; gap: 8px;
 }
+
+/* ── STATUS BOX ── */
+.sbox { border-radius: 10px; padding: 12px 14px; font-size: 13px; font-weight: 600; margin-bottom: 12px; display: none; }
+.sbox-ok  { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
+.sbox-err { background: var(--danger-l); border: 1px solid #fecaca; color: #b91c1c; }
 
 /* ── TABLE ── */
-.rtc-table-wrap { overflow-x: auto; margin-bottom: 20px; }
-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tbl-wrap { overflow-x: auto; margin-bottom: 16px; border-radius: 10px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th {
-  background: var(--ink); color: #fff;
-  font-family: 'Syne', sans-serif;
-  font-size: 10px; font-weight: 700;
+  background: #f9fafb; color: var(--muted);
+  font-size: 9.5px; font-weight: 700;
   letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 10px; text-align: left;
+  padding: 9px 10px; text-align: left;
+  border-bottom: 1px solid var(--border);
 }
-td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 12.5px; }
 tr:last-child td { border-bottom: none; }
-tr:nth-child(even) td { background: #fafaf8; }
+tr:nth-child(even) td { background: #fafafa; }
 
 /* ── SPINNER ── */
-.spinner { text-align: center; padding: 32px 20px; color: var(--muted); font-size: 14px; }
-.spin-ring {
-  width: 28px; height: 28px;
-  border: 3px solid var(--border); border-top-color: var(--ink);
-  border-radius: 50%; animation: spin .7s linear infinite;
-  margin: 0 auto 12px;
-}
+.spinner { text-align: center; padding: 28px; color: var(--muted); font-size: 13px; }
+.ring { width: 24px; height: 24px; border: 2.5px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 10px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── SCANNER ── */
-#scannerOverlay { align-items: center; }
-.scanner-box {
-  width: 92%; max-width: 420px;
-  background: #000; border-radius: 20px; overflow: hidden; position: relative;
-}
-#scannerVideo { width: 100%; display: block; }
-.scanner-close {
-  position: absolute; top: 14px; right: 14px;
-  background: rgba(255,255,255,.18); border: none; border-radius: 50%;
-  width: 36px; height: 36px; color: #fff; font-size: 18px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-}
+#scanOverlay { align-items: center; }
+.scan-box { width: 88%; max-width: 360px; background: #000; border-radius: 18px; overflow: hidden; position: relative; }
+#scanVideo { width: 100%; display: block; }
+.scan-close { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.2); border-radius: 50%; width: 32px; height: 32px; color: #fff; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
 /* ── TOAST ── */
 .toast {
-  position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--ink); color: #fff;
-  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
-  padding: 12px 22px; border-radius: 50px; z-index: 99999;
-  transition: transform .3s cubic-bezier(.22,1,.36,1), opacity .3s;
-  opacity: 0; white-space: nowrap; pointer-events: none;
+  position: fixed; bottom: 22px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--text); color: #fff;
+  font-size: 13px; font-weight: 600;
+  padding: 11px 20px; border-radius: 50px;
+  z-index: 99999; opacity: 0; white-space: nowrap;
+  pointer-events: none; transition: transform .28s cubic-bezier(.22,1,.36,1), opacity .28s;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 </style>
 </head>
 <body>
 <div class="shell">
 
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <div class="top-bar-inner">
-      <div class="logo-mark">ET</div>
-      <div style="flex:1">
-        <div class="top-bar-label">Gala Markets</div>
-        <div id="headerText">Expiry Tracker</div>
-      </div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">GM</div>
+    <div class="topbar-info">
+      <div class="topbar-brand">Gala Markets</div>
+      <div id="headerText">Expiry Tracker</div>
     </div>
   </div>
 
-  <!-- PAGE 1 — STORE SELECT -->
+  <!-- PAGE 1 -->
   <div id="storePage" class="page">
-    <div class="hero-block">
-      <div class="hero-title">Track &amp;<br>Submit Expiry</div>
-      <div class="hero-sub">Select your store and submission week to begin.</div>
+
+    <div class="hero">
+      <div class="hero-tag">Operations Tool</div>
+      <h1>Expiry Tracker</h1>
+      <p>Log near-expiry items and submit weekly RTC reports to buyers instantly.</p>
     </div>
 
-    <div class="section-label">Store</div>
-    <div class="field">
-      <label>Select Store</label>
-      <select id="storeSelect"><option value="">Loading stores…</option></select>
+    <div class="slabel">Store</div>
+    <div class="card">
+      <div class="field">
+        <label>Select Store</label>
+        <select id="storeSelect"><option value="">Loading stores…</option></select>
+      </div>
     </div>
 
-    <div class="section-label">Expiry Week</div>
-    <div class="week-grid">
-      <div class="week-pill" onclick="selectWeek(this,'Week 1 (1–7)')">
-        <span class="pill-label">Week 1</span><span class="pill-range">Days 1 – 7</span>
-      </div>
-      <div class="week-pill" onclick="selectWeek(this,'Week 2 (8–14)')">
-        <span class="pill-label">Week 2</span><span class="pill-range">Days 8 – 14</span>
-      </div>
-      <div class="week-pill" onclick="selectWeek(this,'Week 3 (15–21)')">
-        <span class="pill-label">Week 3</span><span class="pill-range">Days 15 – 21</span>
-      </div>
-      <div class="week-pill" onclick="selectWeek(this,'Week 4 (22–31)')">
-        <span class="pill-label">Week 4</span><span class="pill-range">Days 22 – 31</span>
+    <div class="slabel">Submission Week</div>
+    <div class="card">
+      <div class="field">
+        <label>Select Week</label>
+        <select id="weekSelect">
+          <option value="">-- Select Week --</option>
+          <option value="Week 1 (1–7)">Week 1 &nbsp;(Days 1 – 7)</option>
+          <option value="Week 2 (8–14)">Week 2 &nbsp;(Days 8 – 14)</option>
+          <option value="Week 3 (15–21)">Week 3 &nbsp;(Days 15 – 21)</option>
+          <option value="Week 4 (22–31)">Week 4 &nbsp;(Days 22 – 31)</option>
+        </select>
       </div>
     </div>
 
     <div style="height:16px"></div>
     <button class="btn btn-primary" onclick="goToEntry()">Continue →</button>
+
   </div>
 
-  <!-- PAGE 2 — ITEM ENTRY -->
+  <!-- PAGE 2 -->
   <div id="entryPage" class="page" style="display:none">
 
-    <div class="store-chip">
-      <div class="store-dot"></div>
-      <span id="storeChipText" class="store-chip-text">—</span>
-    </div>
-
-    <div class="section-label">Article Lookup</div>
-    <div class="field">
-      <label>Article Code</label>
-      <input id="articleInput" placeholder="Type article code…" autocomplete="off">
-    </div>
-
-    <div class="barcode-wrap" style="margin-bottom:12px">
-      <div class="field">
-        <label>Barcode</label>
-        <input id="barcodeInput" placeholder="Scan or type barcode…" autocomplete="off">
+    <div class="store-bar">
+      <div class="store-bar-l">
+        <div class="dot"></div>
+        <span id="storeBarName" class="store-name">—</span>
       </div>
-      <button class="scan-btn" onclick="openScanner()" title="Scan barcode">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
-          <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
-          <line x1="7" y1="12" x2="7" y2="12.01"/><line x1="12" y1="8" x2="12" y2="16"/>
-          <line x1="17" y1="12" x2="17" y2="12.01"/>
-        </svg>
-      </button>
+      <span id="storeBarWeek" class="week-badge">—</span>
     </div>
 
-    <div class="divider"></div>
-    <div class="section-label">Item Details</div>
-
-    <div class="field">
-      <label>Description</label>
-      <input id="descInput" readonly placeholder="Auto-filled">
-    </div>
-    <div class="field">
-      <label>Department</label>
-      <input id="deptInput" readonly placeholder="Auto-filled">
-    </div>
-    <div class="field-row">
+    <div class="slabel">Article Lookup</div>
+    <div class="card">
       <div class="field">
-        <label>Stock Qty</label>
-        <input type="number" id="stockInput" placeholder="0" min="0">
-      </div>
-      <div class="field">
-        <label>Expiry Date</label>
-        <input type="date" id="expiryInput">
+        <label>Article Code</label>
+        <input id="articleInput" placeholder="Type article number…" autocomplete="off">
       </div>
     </div>
 
-    <div style="height:8px"></div>
+    <div class="bc-row">
+      <div class="card">
+        <div class="field">
+          <label>Barcode</label>
+          <input id="barcodeInput" placeholder="Scan or type barcode…" autocomplete="off">
+        </div>
+      </div>
+      <button class="scan-btn" onclick="openScanner()" title="Scan barcode">📷</button>
+    </div>
+
+    <div class="divider">item details</div>
+
+    <div class="card">
+      <div class="field">
+        <label>Description</label>
+        <input id="descInput" readonly placeholder="Auto-filled">
+      </div>
+      <div class="field">
+        <label>Department</label>
+        <input id="deptInput" readonly placeholder="Auto-filled">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Stock Qty</label>
+          <input type="number" id="stockInput" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label>Expiry Date</label>
+          <input type="date" id="expiryInput">
+        </div>
+      </div>
+    </div>
+
+    <div style="height:10px"></div>
     <button class="btn btn-primary" id="submitItemBtn" onclick="submitEntry()">✓ &nbsp;Submit Item</button>
 
-    <div class="divider"></div>
+    <div class="divider">week actions</div>
 
-    <button class="btn btn-danger" onclick="openRTC()">⚡ &nbsp;Submit Week RTC to Buyer</button>
-    <button class="btn btn-outline" onclick="backToStore()">← Change Store / Week</button>
+    <button class="btn btn-danger" onclick="openRTC()">⚡ &nbsp;Submit RTC to Buyer</button>
+    <button class="btn btn-ghost" onclick="backToStore()">← &nbsp;Change Store / Week</button>
+
   </div>
 </div>
 
-<!-- RTC POPUP -->
-<div class="overlay" id="rtcPopup">
-  <div class="popup">
-    <div class="popup-handle"></div>
-    <div class="popup-title">RTC Submission</div>
-    <div class="popup-sub" id="rtcSubtitle">Preview before sending</div>
+<!-- RTC SHEET -->
+<div class="overlay" id="rtcOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">RTC Submission</div>
+    <div class="sheet-sub" id="rtcSub">Loading preview…</div>
     <div class="notice">
-      <span>⚠</span>
-      <span>Email will be sent to Buyer &amp; Area Manager upon submission.</span>
+      <span>📧</span>
+      <span>Submission email will be sent to all configured Buyers &amp; Area Managers for this store.</span>
     </div>
-    <div id="rtcContent">
-      <div class="spinner"><div class="spin-ring"></div>Loading items…</div>
-    </div>
-    <button class="btn btn-danger" id="sendEmailBtn" onclick="submitRTC()">Send Submission Email</button>
-    <button class="btn btn-outline" onclick="closeRTC()">Cancel</button>
+    <div id="sbox" class="sbox"></div>
+    <div id="rtcContent"><div class="spinner"><div class="ring"></div>Fetching items…</div></div>
+    <button class="btn btn-danger" id="sendBtn" onclick="submitRTC()">Send Submission Email</button>
+    <button class="btn btn-ghost" onclick="closeRTC()">Cancel</button>
   </div>
 </div>
 
 <!-- SCANNER -->
-<div id="scannerOverlay" class="overlay">
-  <div class="scanner-box">
-    <video id="scannerVideo"></video>
-    <button class="scanner-close" onclick="closeScanner()">✕</button>
+<div id="scanOverlay" class="overlay">
+  <div class="scan-box">
+    <video id="scanVideo"></video>
+    <button class="scan-close" onclick="closeScanner()">✕</button>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwvJ9069dOAncBLWAWUuAsjqY-78_xkfuo4TUqLSi1JqxEtDb6PqeFXINypEuOM3unM9A/exec";
-
-let articles = [], currentRTCData = [], selectedWeek = "";
-const zxingReader = new ZXing.BrowserMultiFormatReader();
+const API = "https://script.google.com/macros/s/AKfycbz7od2irkrwCRhtIpd7SmHVVvabI2RBakmWNds_Z5EaeJHzC_8BnWONAPRTAWl537YbTg/exec";
+let arts = [], rtcRows = [];
+const zx = new ZXing.BrowserMultiFormatReader();
 
 /* TOAST */
-function showToast(msg, ms = 2500) {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), ms);
+function toast(msg, ms=2800){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),ms);
 }
 
 /* INIT */
-window.onload = async () => {
+window.onload=async()=>{
   await loadStores();
   await loadArticles();
-
-  document.getElementById("articleInput").addEventListener("input", () => {
-    const m = articles.find(a => a.article === articleInput.value.trim());
-    if (m) { barcodeInput.value = m.barcode; descInput.value = m.desc; deptInput.value = m.dept; }
-  });
-  document.getElementById("barcodeInput").addEventListener("input", () => {
-    const m = articles.find(a => a.barcode === barcodeInput.value.trim());
-    if (m) { articleInput.value = m.article; descInput.value = m.desc; deptInput.value = m.dept; }
-  });
+  document.getElementById("articleInput").addEventListener("input",matchByArticle);
+  document.getElementById("barcodeInput").addEventListener("input",matchByBarcode);
 };
 
 /* STORES */
-async function loadStores() {
-  try {
-    const r = await fetch(API_URL + "?action=stores");
-    const d = await r.json();
-    storeSelect.innerHTML = '<option value="">Select a store…</option>';
-    d.forEach(s => {
-      const o = document.createElement("option");
-      o.value = s[0]; o.textContent = s[1];
-      storeSelect.appendChild(o);
-    });
-  } catch (err) {
-    storeSelect.innerHTML = '<option value="">Failed to load — check connection</option>';
-  }
-}
-
-/* WEEK PILLS */
-function selectWeek(el, val) {
-  document.querySelectorAll(".week-pill").forEach(p => p.classList.remove("selected"));
-  el.classList.add("selected");
-  selectedWeek = val;
-}
-
-/* NAV */
-function goToEntry() {
-  if (!storeSelect.value) { showToast("⚠ Please select a store"); return; }
-  if (!selectedWeek)       { showToast("⚠ Please select a week");  return; }
-  const name = storeSelect.options[storeSelect.selectedIndex].text;
-  document.getElementById("headerText").textContent = name;
-  document.getElementById("storeChipText").textContent = name + "  ·  " + selectedWeek;
-  storePage.style.display = "none";
-  entryPage.style.display = "block";
-}
-
-function backToStore() {
-  storePage.style.display = "block";
-  entryPage.style.display = "none";
-  document.getElementById("headerText").textContent = "Expiry Tracker";
+async function loadStores(){
+  try{
+    const d=await(await fetch(API+"?action=stores")).json();
+    const sel=document.getElementById("storeSelect");
+    sel.innerHTML='<option value="">-- Select Store --</option>';
+    d.forEach(s=>{const o=document.createElement("option");o.value=s[0];o.textContent=s[1];sel.appendChild(o);});
+  }catch(e){toast("⚠ Could not load stores");}
 }
 
 /* ARTICLES */
-async function loadArticles() {
-  try {
-    const r = await fetch(API_URL + "?action=articles");
-    const d = await r.json();
-    articles = d.map(a => ({
-      article: String(a[0]), barcode: String(a[1]),
-      desc: String(a[2]),    dept: String(a[3] || "")
-    }));
-  } catch (err) { console.error("Articles failed:", err); }
+async function loadArticles(){
+  try{
+    const d=await(await fetch(API+"?action=articles")).json();
+    arts=d.map(a=>({article:String(a[0]),barcode:String(a[1]),desc:String(a[2]),dept:String(a[3]||"")}));
+  }catch(e){console.error(e);}
+}
+function fillDetails(m){
+  document.getElementById("barcodeInput").value=m.barcode;
+  document.getElementById("descInput").value=m.desc;
+  document.getElementById("deptInput").value=m.dept;
+}
+function matchByArticle(){
+  const m=arts.find(a=>a.article===document.getElementById("articleInput").value.trim());
+  if(m)fillDetails(m);
+}
+function matchByBarcode(){
+  const m=arts.find(a=>a.barcode===document.getElementById("barcodeInput").value.trim());
+  if(m){document.getElementById("articleInput").value=m.article;fillDetails(m);}
+}
+
+/* NAV */
+function goToEntry(){
+  const s=document.getElementById("storeSelect");
+  const w=document.getElementById("weekSelect");
+  if(!s.value){toast("⚠ Select a store");return;}
+  if(!w.value){toast("⚠ Select a week");return;}
+  document.getElementById("headerText").textContent=s.options[s.selectedIndex].text;
+  document.getElementById("storeBarName").textContent=s.options[s.selectedIndex].text;
+  document.getElementById("storeBarWeek").textContent=w.value;
+  document.getElementById("storePage").style.display="none";
+  document.getElementById("entryPage").style.display="block";
+}
+function backToStore(){
+  document.getElementById("storePage").style.display="block";
+  document.getElementById("entryPage").style.display="none";
+  document.getElementById("headerText").textContent="Expiry Tracker";
 }
 
 /* SUBMIT ITEM */
-async function submitEntry() {
-  const articleInput = document.getElementById("articleInput");
-  const barcodeInput = document.getElementById("barcodeInput");
-  const descInput    = document.getElementById("descInput");
-  const deptInput    = document.getElementById("deptInput");
-  const stockInput   = document.getElementById("stockInput");
-  const expiryInput  = document.getElementById("expiryInput");
-  const btn          = document.getElementById("submitItemBtn");
-
-  if (!descInput.value || !stockInput.value || !expiryInput.value) {
-    showToast("⚠ Please complete all fields"); return;
-  }
-
-  btn.textContent = "Submitting…"; btn.disabled = true;
-
-  try {
-    await fetch(API_URL, {
-      method:  "POST",
-      mode:    "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({
-        storeCode:   storeSelect.value,
-        storeName:   storeSelect.options[storeSelect.selectedIndex].text,
-        week:        selectedWeek,
-        article:     articleInput.value,
-        barcode:     barcodeInput.value,
-        description: descInput.value,
-        department:  deptInput.value,
-        stock:       stockInput.value,
-        expiry:      expiryInput.value
+async function submitEntry(){
+  const s=document.getElementById("storeSelect");
+  const w=document.getElementById("weekSelect").value;
+  const desc=document.getElementById("descInput").value;
+  const stock=document.getElementById("stockInput").value;
+  const expiry=document.getElementById("expiryInput").value;
+  const btn=document.getElementById("submitItemBtn");
+  if(!desc||!stock||!expiry){toast("⚠ Complete all fields");return;}
+  btn.textContent="Submitting…";btn.disabled=true;
+  try{
+    await fetch(API,{
+      method:"POST",mode:"no-cors",
+      headers:{"Content-Type":"text/plain"},
+      body:JSON.stringify({
+        storeCode:s.value,
+        storeName:s.options[s.selectedIndex].text,
+        week:w,
+        article:document.getElementById("articleInput").value,
+        barcode:document.getElementById("barcodeInput").value,
+        description:desc,
+        department:document.getElementById("deptInput").value,
+        stock,expiry
       })
     });
-    showToast("✅ Item submitted successfully");
-    articleInput.value = barcodeInput.value = descInput.value = deptInput.value = "";
-    stockInput.value = expiryInput.value = "";
-    articleInput.focus();
-  } catch (err) {
-    showToast("❌ Submit failed: " + err.message);
-  }
-
-  btn.innerHTML = "✓ &nbsp;Submit Item"; btn.disabled = false;
-}
-
-/* DATE FORMAT */
-function formatDateOnly(v) {
-  if (!v) return "—";
-  const d = new Date(v); if (isNaN(d)) return v;
-  return d.toLocaleDateString("en-GB");
+    toast("✅ Item submitted successfully");
+    ["articleInput","barcodeInput","descInput","deptInput","stockInput","expiryInput"]
+      .forEach(id=>document.getElementById(id).value="");
+    document.getElementById("articleInput").focus();
+  }catch(e){toast("❌ "+e.message);}
+  btn.innerHTML="✓ &nbsp;Submit Item";btn.disabled=false;
 }
 
 /* RTC PREVIEW */
-async function openRTC() {
-  rtcPopup.classList.add("open");
-  document.getElementById("rtcContent").innerHTML =
-    '<div class="spinner"><div class="spin-ring"></div>Fetching items…</div>';
-  document.getElementById("rtcSubtitle").textContent = "Preview before sending";
-  document.getElementById("sendEmailBtn").disabled = false;
-  document.getElementById("sendEmailBtn").innerHTML = "Send Submission Email";
+async function openRTC(){
+  const s=document.getElementById("storeSelect");
+  const w=document.getElementById("weekSelect").value;
+  document.getElementById("rtcOverlay").classList.add("open");
+  document.getElementById("rtcContent").innerHTML='<div class="spinner"><div class="ring"></div>Fetching items…</div>';
+  document.getElementById("rtcSub").textContent="Loading preview…";
+  document.getElementById("sbox").style.display="none";
+  document.getElementById("sendBtn").disabled=false;
+  document.getElementById("sendBtn").innerHTML="Send Submission Email";
+  document.getElementById("sendBtn").style.display="flex";
 
-  const ym = new Date().toISOString().slice(0, 7);
-  try {
-    const r = await fetch(
-      `${API_URL}?action=rtcPreview` +
-      `&storeCode=${encodeURIComponent(storeSelect.value)}` +
-      `&week=${encodeURIComponent(selectedWeek)}` +
-      `&submissionMonth=${ym}`
-    );
-    const d = await r.json();
-    currentRTCData = d.rows || [];
-
-    if (currentRTCData.length === 0) {
-      document.getElementById("rtcContent").innerHTML =
-        '<div class="spinner">No records found for this store / week / month.</div>';
-      document.getElementById("sendEmailBtn").disabled = true;
+  const ym=new Date().toISOString().slice(0,7);
+  try{
+    const d=await(await fetch(
+      `${API}?action=rtcPreview&storeCode=${encodeURIComponent(s.value)}&week=${encodeURIComponent(w)}&submissionMonth=${ym}`
+    )).json();
+    rtcRows=d.rows||[];
+    if(!rtcRows.length){
+      document.getElementById("rtcContent").innerHTML='<div class="spinner">No records found for this store / week / month.</div>';
+      document.getElementById("rtcSub").textContent="Nothing to submit";
+      document.getElementById("sendBtn").disabled=true;
       return;
     }
-
-    document.getElementById("rtcSubtitle").textContent =
-      currentRTCData.length + " item" + (currentRTCData.length !== 1 ? "s" : "") + " ready to submit";
-
-    let html = `<div class="rtc-table-wrap"><table>
-      <tr><th>Article</th><th>Description</th><th>Dept</th><th>Stock</th><th>Expiry</th></tr>`;
-    currentRTCData.forEach(x => {
-      html += `<tr>
-        <td>${x.Article}</td><td>${x.Description}</td>
-        <td>${x.Department || "—"}</td><td>${x.Stock}</td>
-        <td>${formatDateOnly(x.ExpiryDate)}</td>
-      </tr>`;
+    document.getElementById("rtcSub").textContent=`${rtcRows.length} item${rtcRows.length>1?"s":""} ready to submit`;
+    let html=`<div class="tbl-wrap"><table>
+      <thead><tr><th>Article</th><th>Description</th><th>Dept</th><th>Stock</th><th>Expiry</th></tr></thead><tbody>`;
+    rtcRows.forEach(x=>{
+      html+=`<tr><td>${x.Article}</td><td>${x.Description}</td><td>${x.Department||"—"}</td><td>${x.Stock}</td><td>${fmtDate(x.ExpiryDate)}</td></tr>`;
     });
-    html += `</table></div>`;
-    document.getElementById("rtcContent").innerHTML = html;
+    html+=`</tbody></table></div>`;
+    document.getElementById("rtcContent").innerHTML=html;
+  }catch(e){
+    document.getElementById("rtcContent").innerHTML=`<div class="spinner" style="color:#dc2626">Error: ${e.message}</div>`;
+  }
+}
+function closeRTC(){document.getElementById("rtcOverlay").classList.remove("open");}
 
-  } catch (err) {
-    document.getElementById("rtcContent").innerHTML =
-      `<div class="spinner" style="color:#dc2626">Error: ${err.message}</div>`;
+/* SEND EMAIL via GET — no CORS issues */
+async function submitRTC(){
+  if(!rtcRows.length){toast("No data to submit");return;}
+  const s=document.getElementById("storeSelect");
+  const w=document.getElementById("weekSelect").value;
+  const btn=document.getElementById("sendBtn");
+  const box=document.getElementById("sbox");
+  btn.textContent="Sending…";btn.disabled=true;
+  document.getElementById("rtcContent").innerHTML='<div class="spinner"><div class="ring"></div>Sending email…</div>';
+  box.style.display="none";
+  const ym=new Date().toISOString().slice(0,7);
+  const url=API
+    +"?action=sendRTCEmail"
+    +"&storeCode="+encodeURIComponent(s.value)
+    +"&storeName="+encodeURIComponent(s.options[s.selectedIndex].text)
+    +"&week="+encodeURIComponent(w)
+    +"&submissionMonth="+encodeURIComponent(ym);
+  try{
+    const result=await(await fetch(url)).json();
+    if(result.success){
+      box.className="sbox sbox-ok";
+      box.textContent="✅ Email sent to: "+result.sentTo;
+      box.style.display="block";
+      document.getElementById("rtcContent").innerHTML="";
+      document.getElementById("sendBtn").style.display="none";
+      toast("✅ Submission email sent!",3500);
+      setTimeout(closeRTC,3000);
+    }else{
+      box.className="sbox sbox-err";
+      box.textContent="❌ "+(result.message||"Unknown error");
+      box.style.display="block";
+      document.getElementById("rtcContent").innerHTML="";
+      btn.innerHTML="Retry";btn.disabled=false;
+    }
+  }catch(e){
+    box.className="sbox sbox-err";
+    box.textContent="❌ Network error: "+e.message;
+    box.style.display="block";
+    document.getElementById("rtcContent").innerHTML="";
+    btn.innerHTML="Retry";btn.disabled=false;
   }
 }
 
-function closeRTC() { rtcPopup.classList.remove("open"); }
-
-/* SEND RTC EMAIL */
-async function submitRTC() {
-  if (currentRTCData.length === 0) { showToast("No data to submit"); return; }
-
-  const btn = document.getElementById("sendEmailBtn");
-  btn.textContent = "Sending…"; btn.disabled = true;
-
-  document.getElementById("rtcContent").innerHTML =
-    '<div class="spinner"><div class="spin-ring"></div>Sending email to Buyer &amp; Area Manager…</div>';
-
-  try {
-    await fetch(API_URL, {
-      method:  "POST",
-      mode:    "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify({
-        action:          "sendRTCEmail",
-        storeCode:       storeSelect.value,
-        storeName:       storeSelect.options[storeSelect.selectedIndex].text,
-        week:            selectedWeek,
-        submissionMonth: new Date().toISOString().slice(0, 7)
-      })
-    });
-
-    setTimeout(() => {
-      closeRTC();
-      showToast("✅ Submission email sent to Buyer & AM", 3500);
-    }, 2500);
-
-  } catch (err) {
-    document.getElementById("rtcContent").innerHTML =
-      `<div class="spinner" style="color:#dc2626">Failed: ${err.message}</div>`;
-    btn.innerHTML = "Send Submission Email"; btn.disabled = false;
-  }
+/* DATE FORMAT */
+function fmtDate(v){
+  if(!v)return"—";
+  const d=new Date(v);return isNaN(d)?v:d.toLocaleDateString("en-GB");
 }
 
 /* SCANNER */
-async function openScanner() {
-  scannerOverlay.classList.add("open");
-  try {
-    await zxingReader.decodeFromVideoDevice(null, "scannerVideo", (res) => {
-      if (res) {
-        document.getElementById("barcodeInput").value = res.text;
-        document.getElementById("barcodeInput").dispatchEvent(new Event("input"));
-        closeScanner();
-        showToast("📷 Barcode scanned");
+async function openScanner(){
+  document.getElementById("scanOverlay").classList.add("open");
+  try{
+    await zx.decodeFromVideoDevice(null,"scanVideo",res=>{
+      if(res){
+        document.getElementById("barcodeInput").value=res.text;
+        matchByBarcode();closeScanner();toast("📷 Barcode scanned");
       }
     });
-  } catch (err) {
-    showToast("Camera error: " + err.message);
-    closeScanner();
-  }
+  }catch(e){toast("Camera error: "+e.message);closeScanner();}
 }
-function closeScanner() { zxingReader.reset(); scannerOverlay.classList.remove("open"); }
+function closeScanner(){zx.reset();document.getElementById("scanOverlay").classList.remove("open");}
 </script>
 </body>
 </html>
