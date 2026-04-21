@@ -341,7 +341,7 @@ tr:nth-child(even) td { background: #fafafa; }
           <input id="barcodeInput" placeholder="Scan or type barcode…" autocomplete="off">
         </div>
       </div>
-      <button class="scan-btn" onclick="openScanner()" title="Scan barcode">📷</button>
+      <button class="scan-btn" onclick="openScanner()" title="Scan barcode">𝄃𝄂𝄀𝄁</button>
     </div>
 
     <div class="divider">item details</div>
@@ -566,7 +566,7 @@ async function submitRTC(){
     const result=await(await fetch(url)).json();
     if(result.success){
       box.className="sbox sbox-ok";
-      box.textContent="✅ Email sent to: "+result.sentTo;
+      box.textContent="✅ Email sent";
       box.style.display="block";
       document.getElementById("rtcContent").innerHTML="";
       document.getElementById("sendBtn").style.display="none";
