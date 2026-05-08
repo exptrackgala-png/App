@@ -8,263 +8,153 @@
 <script src="https://unpkg.com/@zxing/library@latest"></script>
 <style>
 :root {
-  --bg:       #f0f2f5;
-  --card:     #ffffff;
-  --border:   #e4e7ec;
-  --primary:  #222d65;
-  --primary-l:#e8f5ee;
-  --accent:   #e85d04;
-  --accent-l: #fff4ee;
-  --text:     #111827;
-  --muted:    #6b7280;
-  --soft:     #9ca3af;
-  --danger:   #dc2626;
-  --danger-l: #fef2f2;
-  --green:    #16a34a;
-  --r:        12px;
-  --shadow:   0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.05);
+  --bg:#f0f2f5; --card:#fff; --border:#e4e7ec;
+  --primary:#222d65; --primary-l:#e8f5ee;
+  --accent:#e85d04; --accent-l:#fff4ee;
+  --text:#111827; --muted:#6b7280; --soft:#9ca3af;
+  --danger:#dc2626; --danger-l:#fef2f2;
+  --green:#16a34a; --blue:#2563eb; --blue-l:#eff6ff;
+  --purple:#7c3aed; --purple-l:#f5f3ff;
+  --r:12px; --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-.shell { max-width: 460px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.shell{max-width:460px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
 
-/* ── TOPBAR ── */
-.topbar {
-  background: var(--primary);
-  padding: 14px 18px;
-  display: flex; align-items: center; gap: 12px;
-  position: sticky; top: 0; z-index: 50;
-  box-shadow: 0 2px 8px rgba(0,0,0,.15);
-}
-.logo {
-  width: 34px; height: 34px;
-  background: #fff;
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 13px;
-  color: var(--primary);
-  flex-shrink: 0;
-  letter-spacing: -.5px;
-}
-.topbar-info { flex: 1; min-width: 0; }
-.topbar-brand { font-size: 10px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 1px; }
-#headerText { font-size: 15px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* TOPBAR */
+.topbar{background:var(--primary);padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.logo{width:34px;height:34px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--primary);flex-shrink:0;letter-spacing:-.5px}
+.topbar-brand{font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1px}
+#headerText{font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* ── PAGE ── */
-.page { padding: 20px 16px; flex: 1; }
+/* PAGE */
+.page{padding:20px 16px;flex:1}
 
-/* ── HERO ── */
-.hero {
-  background: var(--primary);
-  border-radius: 16px;
-  padding: 24px 20px;
-  margin-bottom: 22px;
-  position: relative; overflow: hidden;
-}
-.hero::after {
-  content: '';
-  position: absolute; right: -20px; top: -20px;
-  width: 120px; height: 120px;
-  background: rgba(255,255,255,.06);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.hero-tag {
-  display: inline-block;
-  background: rgba(255,255,255,.15);
-  color: rgba(255,255,255,.85);
-  font-size: 10px; font-weight: 700;
-  letter-spacing: 1.8px; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 50px;
-  margin-bottom: 10px;
-}
-.hero h1 { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 6px; }
-.hero p  { font-size: 13px; color: rgba(255,255,255,.6); font-weight: 400; line-height: 1.5; }
+/* HERO */
+.hero{background:var(--primary);border-radius:16px;padding:24px 20px;margin-bottom:22px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-20px;top:-20px;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%;pointer-events:none}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;padding:4px 10px;border-radius:50px;margin-bottom:10px}
+.hero h1{font-size:22px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:6px}
+.hero p{font-size:13px;color:rgba(255,255,255,.6);font-weight:400;line-height:1.5}
 
-/* ── SECTION LABEL ── */
-.slabel {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted); margin: 18px 0 8px;
-}
-.slabel:first-child { margin-top: 0; }
+/* SECTION LABEL */
+.slabel{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+.slabel:first-child{margin-top:0}
 
-/* ── CARD ── */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  margin-bottom: 10px;
-  overflow: hidden;
-}
+/* CARD / FIELD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+.field{padding:12px 14px;transition:background .15s}
+.field+.field{border-top:1px solid var(--border)}
+.field:focus-within{background:#fafbff}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--soft);margin-bottom:4px}
+.field input,.field select{width:100%;border:none;outline:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:500;color:var(--text);-webkit-appearance:none}
+.field select option{background:#fff;color:var(--text)}
+.field input::placeholder{color:#d1d5db;font-weight:400}
+.field input[readonly]{color:var(--muted);font-weight:400}
+.field-row{display:flex}
+.field-row .field{flex:1}
+.field-row .field+.field{border-top:none;border-left:1px solid var(--border)}
 
-/* ── FIELD ── */
-.field { padding: 12px 14px; transition: background .15s; }
-.field + .field { border-top: 1px solid var(--border); }
-.field:focus-within { background: #fafbff; }
-.field label {
-  display: block; font-size: 10px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--soft); margin-bottom: 4px;
-}
-.field input, .field select {
-  width: 100%; border: none; outline: none;
-  background: transparent;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 15px; font-weight: 500; color: var(--text);
-  -webkit-appearance: none;
-}
-.field select option { background: #fff; color: var(--text); }
-.field input::placeholder { color: #d1d5db; font-weight: 400; }
-.field input[readonly] { color: var(--muted); font-weight: 400; }
+/* BARCODE ROW */
+.bc-row{display:flex;gap:8px;align-items:stretch;margin-bottom:10px}
+.bc-row .card{flex:1;margin-bottom:0}
+.scan-btn{width:48px;background:var(--primary);border:none;border-radius:var(--r);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow);transition:opacity .15s,transform .1s}
+.scan-btn:active{opacity:.8;transform:scale(.95)}
 
-/* ── TWO COLUMN ── */
-.field-row { display: flex; }
-.field-row .field { flex: 1; }
-.field-row .field + .field { border-top: none; border-left: 1px solid var(--border); }
+/* BUTTONS */
+.btn{width:100%;padding:14px 18px;border:none;border-radius:var(--r);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:8px;transition:opacity .15s,transform .1s;box-shadow:var(--shadow)}
+.btn:active{opacity:.85;transform:scale(.98)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-purple{background:var(--purple);color:#fff}
+.btn-ghost{background:var(--card);color:var(--muted);border:1px solid var(--border);box-shadow:none}
 
-/* ── BARCODE ROW ── */
-.bc-row { display: flex; gap: 8px; align-items: stretch; margin-bottom: 10px; }
-.bc-row .card { flex: 1; margin-bottom: 0; }
-.scan-btn {
-  width: 48px;
-  background: var(--primary);
-  border: none; border-radius: var(--r);
-  color: #fff; font-size: 20px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; box-shadow: var(--shadow);
-  transition: opacity .15s, transform .1s;
-}
-.scan-btn:active { opacity: .8; transform: scale(.95); }
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--soft);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* ── BUTTONS ── */
-.btn {
-  width: 100%; padding: 14px 18px; border: none;
-  border-radius: var(--r); cursor: pointer;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  margin-bottom: 8px;
-  transition: opacity .15s, transform .1s;
-  box-shadow: var(--shadow);
-}
-.btn:active { opacity: .85; transform: scale(.98); }
-.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
-.btn-primary { background: var(--primary); color: #fff; }
-.btn-danger  { background: var(--danger);  color: #fff; }
-.btn-ghost   { background: var(--card); color: var(--muted); border: 1px solid var(--border); box-shadow: none; }
+/* STORE BAR */
+.store-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;box-shadow:var(--shadow)}
+.store-bar-l{display:flex;align-items:center;gap:9px}
+.dot{width:8px;height:8px;background:var(--green);border-radius:50%}
+.store-name{font-size:13px;font-weight:600}
+.week-badge{font-size:11px;font-weight:700;color:var(--primary);background:var(--primary-l);border:1px solid #c3e6d4;border-radius:6px;padding:3px 10px}
 
-/* ── DIVIDER ── */
-.divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: var(--soft); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+/* OVERLAY / SHEET */
+.overlay{position:fixed;inset:0;background:rgba(17,24,39,.5);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:9999}
+.overlay.open{display:flex}
+.sheet{background:var(--card);border-radius:20px 20px 0 0;padding:18px 18px 34px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:up .25s cubic-bezier(.22,1,.36,1);border-top:1px solid var(--border)}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:99px;margin:0 auto 18px}
+.sheet-title{font-size:18px;font-weight:800;margin-bottom:3px}
+.sheet-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
 
-/* ── STORE BAR ── */
-.store-bar {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 12px 14px;
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-.store-bar-l { display: flex; align-items: center; gap: 9px; }
-.dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; }
-.store-name { font-size: 13px; font-weight: 600; }
-.week-badge {
-  font-size: 11px; font-weight: 700;
-  color: var(--primary);
-  background: var(--primary-l);
-  border: 1px solid #c3e6d4;
-  border-radius: 6px; padding: 3px 10px;
-}
+/* MODE CARDS */
+.mode-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+.mode-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:18px 16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:border-color .18s,box-shadow .18s;box-shadow:var(--shadow)}
+.mode-card:hover{border-color:#aaa;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.mode-card.mode-followup:hover{border-color:var(--blue)}
+.mode-card.mode-add:hover{border-color:var(--primary)}
+.mode-card.mode-review:hover{border-color:var(--purple)}
+.mode-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.mode-icon.blue{background:var(--blue-l)}
+.mode-icon.green{background:var(--primary-l)}
+.mode-icon.purple{background:var(--purple-l)}
+.mode-info{flex:1}
+.mode-title{font-size:15px;font-weight:700;margin-bottom:2px}
+.mode-desc{font-size:12px;color:var(--muted);font-weight:400;line-height:1.4}
 
-/* ── OVERLAY ── */
-.overlay {
-  position: fixed; inset: 0;
-  background: rgba(17,24,39,.5);
-  backdrop-filter: blur(4px);
-  display: none; align-items: flex-end; justify-content: center;
-  z-index: 9999;
-}
-.overlay.open { display: flex; }
+/* NOTICE */
+.notice{background:var(--accent-l);border:1px solid #fcd9b6;border-radius:10px;padding:11px 13px;font-size:12.5px;color:#9a3412;font-weight:500;margin-bottom:14px;display:flex;gap:8px}
 
-.sheet {
-  background: var(--card);
-  border-radius: 20px 20px 0 0;
-  padding: 18px 18px 34px;
-  width: 100%; max-width: 460px;
-  max-height: 90vh; overflow-y: auto;
-  animation: up .25s cubic-bezier(.22,1,.36,1);
-  border-top: 1px solid var(--border);
-}
-@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 99px; margin: 0 auto 18px; }
-.sheet-title { font-size: 18px; font-weight: 800; margin-bottom: 3px; }
-.sheet-sub   { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+/* STATUS BOX */
+.sbox{border-radius:10px;padding:12px 14px;font-size:13px;font-weight:600;margin-bottom:12px;display:none}
+.sbox-ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d}
+.sbox-err{background:var(--danger-l);border:1px solid #fecaca;color:#b91c1c}
 
-/* ── NOTICE ── */
-.notice {
-  background: var(--accent-l);
-  border: 1px solid #fcd9b6;
-  border-radius: 10px; padding: 11px 13px;
-  font-size: 12.5px; color: #9a3412;
-  font-weight: 500; margin-bottom: 14px;
-  display: flex; gap: 8px;
-}
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin-bottom:16px;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f9fafb;color:var(--muted);font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);font-size:12.5px}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#fafafa}
 
-/* ── STATUS BOX ── */
-.sbox { border-radius: 10px; padding: 12px 14px; font-size: 13px; font-weight: 600; margin-bottom: 12px; display: none; }
-.sbox-ok  { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
-.sbox-err { background: var(--danger-l); border: 1px solid #fecaca; color: #b91c1c; }
+/* FOLLOW UP LIST */
+.fu-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.fu-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s;box-shadow:var(--shadow)}
+.fu-item:hover{border-color:var(--blue);box-shadow:0 2px 12px rgba(37,99,235,.1)}
+.fu-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.fu-item-article{font-size:13px;font-weight:700;color:var(--text)}
+.fu-item-stock{font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-l);border:1px solid #c3e6d4;border-radius:6px;padding:2px 9px}
+.fu-item-desc{font-size:12px;color:var(--muted);margin-bottom:3px}
+.fu-item-expiry{font-size:11px;color:var(--soft)}
 
-/* ── TABLE ── */
-.tbl-wrap { overflow-x: auto; margin-bottom: 16px; border-radius: 10px; border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-th {
-  background: #f9fafb; color: var(--muted);
-  font-size: 9.5px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 9px 10px; text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 12.5px; }
-tr:last-child td { border-bottom: none; }
-tr:nth-child(even) td { background: #fafafa; }
+/* REVIEW TABLE WITH DELETE */
+.review-row{display:flex;align-items:center;gap:0}
+.review-row td:last-child{padding:4px 8px}
+.del-btn{background:var(--danger-l);border:1px solid #fecaca;color:var(--danger);border-radius:7px;padding:5px 9px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s}
+.del-btn:hover{background:#fecaca}
 
-/* ── SPINNER ── */
-.spinner { text-align: center; padding: 28px; color: var(--muted); font-size: 13px; }
-.ring { width: 24px; height: 24px; border: 2.5px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 10px; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* SPINNER */
+.spinner{text-align:center;padding:28px;color:var(--muted);font-size:13px}
+.ring{width:24px;height:24px;border:2.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── SCANNER ── */
-#scanOverlay { align-items: center; }
-.scan-box { width: 88%; max-width: 360px; background: #000; border-radius: 18px; overflow: hidden; position: relative; }
-#scanVideo { width: 100%; display: block; }
-.scan-close { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.2); border-radius: 50%; width: 32px; height: 32px; color: #fff; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+/* SCANNER */
+#scanOverlay{align-items:center}
+.scan-box{width:88%;max-width:360px;background:#000;border-radius:18px;overflow:hidden;position:relative}
+#scanVideo{width:100%;display:block}
+.scan-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:32px;height:32px;color:#fff;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-/* ── TOAST ── */
-.toast {
-  position: fixed; bottom: 22px; left: 50%;
-  transform: translateX(-50%) translateY(60px);
-  background: var(--text); color: #fff;
-  font-size: 13px; font-weight: 600;
-  padding: 11px 20px; border-radius: 50px;
-  z-index: 99999; opacity: 0; white-space: nowrap;
-  pointer-events: none; transition: transform .28s cubic-bezier(.22,1,.36,1), opacity .28s;
-  box-shadow: 0 4px 20px rgba(0,0,0,.25);
-}
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;font-size:13px;font-weight:600;padding:11px 20px;border-radius:50px;z-index:99999;opacity:0;white-space:nowrap;pointer-events:none;transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .28s;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 </style>
 </head>
 <body>
@@ -273,15 +163,14 @@ tr:nth-child(even) td { background: #fafafa; }
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">GM</div>
-    <div class="topbar-info">
+    <div style="flex:1;min-width:0">
       <div class="topbar-brand">Gala Markets</div>
       <div id="headerText">Expiry Tracker</div>
     </div>
   </div>
 
-  <!-- PAGE 1 -->
+  <!-- ══════════════ PAGE 1 — STORE SELECT ══════════════ -->
   <div id="storePage" class="page">
-
     <div class="hero">
       <div class="hero-tag">Operations Tool</div>
       <h1>Expiry Tracker</h1>
@@ -302,28 +191,33 @@ tr:nth-child(even) td { background: #fafafa; }
         <label>Select Week</label>
         <select id="weekSelect">
           <option value="">-- Select Week --</option>
-          <option value="Week 1 (1–7)">Week 1 &nbsp;(Days 1 – 7)</option>
-          <option value="Week 2 (8–14)">Week 2 &nbsp;(Days 8 – 14)</option>
-          <option value="Week 3 (15–21)">Week 3 &nbsp;(Days 15 – 21)</option>
-          <option value="Week 4 (22–31)">Week 4 &nbsp;(Days 22 – 31)</option>
+          <option value="Week 1 (1–7)">Week 1 (Days 1–7)</option>
+          <option value="Week 2 (8–14)">Week 2 (Days 8–14)</option>
+          <option value="Week 3 (15–21)">Week 3 (Days 15–21)</option>
+          <option value="Week 4 (22–31)">Week 4 (Days 22–31)</option>
         </select>
       </div>
     </div>
 
     <div style="height:16px"></div>
-    <button class="btn btn-primary" onclick="goToEntry()">Continue →</button>
-
+    <button class="btn btn-primary" onclick="goToModeSelect()">Continue →</button>
   </div>
 
-  <!-- PAGE 2 -->
+  <!-- ══════════════ PAGE 2 — ADD NEW ITEM ══════════════ -->
   <div id="entryPage" class="page" style="display:none">
-
     <div class="store-bar">
-      <div class="store-bar-l">
-        <div class="dot"></div>
-        <span id="storeBarName" class="store-name">—</span>
-      </div>
+      <div class="store-bar-l"><div class="dot"></div><span id="storeBarName" class="store-name">—</span></div>
       <span id="storeBarWeek" class="week-badge">—</span>
+    </div>
+
+     <div class="bc-row">
+      <div class="card">
+        <div class="field">
+          <label>Barcode</label>
+          <input id="barcodeInput" placeholder="Scan or type barcode…" autocomplete="off">
+        </div>
+      </div>
+      <button class="scan-btn" onclick="openScanner()" title="Scan">𝄃𝄂𝄀𝄁</button>
     </div>
 
     <div class="slabel">Article Lookup</div>
@@ -334,68 +228,142 @@ tr:nth-child(even) td { background: #fafafa; }
       </div>
     </div>
 
-    <div class="bc-row">
-      <div class="card">
-        <div class="field">
-          <label>Barcode</label>
-          <input id="barcodeInput" placeholder="Scan or type barcode…" autocomplete="off">
-        </div>
-      </div>
-      <button class="scan-btn" onclick="openScanner()" title="Scan barcode">𝄃𝄂𝄀𝄁</button>
-    </div>
+   
 
     <div class="divider">item details</div>
 
     <div class="card">
-      <div class="field">
-        <label>Description</label>
-        <input id="descInput" readonly placeholder="Auto-filled">
-      </div>
-      <div class="field">
-        <label>Department</label>
-        <input id="deptInput" readonly placeholder="Auto-filled">
-      </div>
+      <div class="field"><label>Description</label><input id="descInput" readonly placeholder="Auto-filled"></div>
+      <div class="field"><label>Department</label><input id="deptInput" readonly placeholder="Auto-filled"></div>
       <div class="field-row">
-        <div class="field">
-          <label>Stock Qty</label>
-          <input type="number" id="stockInput" placeholder="0" min="0">
-        </div>
-        <div class="field">
-          <label>Expiry Date</label>
-          <input type="date" id="expiryInput">
-        </div>
+        <div class="field"><label>Stock Qty</label><input type="number" id="stockInput" placeholder="0" min="0"></div>
+        <div class="field"><label>Expiry Date</label><input type="date" id="expiryInput"></div>
       </div>
     </div>
 
     <div style="height:10px"></div>
     <button class="btn btn-primary" id="submitItemBtn" onclick="submitEntry()">✓ &nbsp;Submit Item</button>
+    <div class="divider">actions</div>
+    <button class="btn btn-ghost" onclick="openModeSheet()">← Back to Mode Select</button>
+  </div>
 
-    <div class="divider">week actions</div>
+  <!-- ══════════════ PAGE 3 — FOLLOW UP ══════════════ -->
+  <div id="followUpPage" class="page" style="display:none">
+    <div class="store-bar">
+      <div class="store-bar-l"><div class="dot"></div><span id="fuStoreName" class="store-name">—</span></div>
+      <span id="fuWeekBadge" class="week-badge">—</span>
+    </div>
 
-    <button class="btn btn-danger" onclick="openRTC()">⚡ &nbsp;Submit RTC to Buyer</button>
-    <button class="btn btn-ghost" onclick="backToStore()">← &nbsp;Change Store / Week</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div>
+        <div style="font-size:16px;font-weight:800">Follow Up</div>
+        <div id="fuLastWeekLabel" style="font-size:12px;color:var(--muted);margin-top:2px">Last week items</div>
+      </div>
+      <button class="btn btn-purple" style="width:auto;padding:10px 16px;margin:0;font-size:13px" onclick="openReviewSheet()">
+        👁 Review
+      </button>
+    </div>
 
+    <div id="fuList"><div class="spinner"><div class="ring"></div>Loading last week data…</div></div>
+
+    <div class="divider"></div>
+    <button class="btn btn-ghost" onclick="openModeSheet()">← Back to Mode Select</button>
+  </div>
+
+</div>
+
+<!-- ══════════════ MODE SELECT SHEET ══════════════ -->
+<div class="overlay" id="modeOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">What would you like to do?</div>
+    <div class="sheet-sub" id="modeSub">Choose an action for this week</div>
+    <div class="mode-grid">
+      <div class="mode-card mode-followup" onclick="startFollowUp()">
+        <div class="mode-icon blue">📋</div>
+        <div class="mode-info">
+          <div class="mode-title">Follow Up</div>
+          <div class="mode-desc">View last week's items and update stock counts for this week</div>
+        </div>
+        <span style="color:#ccc;font-size:18px">›</span>
+      </div>
+      <div class="mode-card mode-add" onclick="startAddNew()">
+        <div class="mode-icon green">➕</div>
+        <div class="mode-info">
+          <div class="mode-title">Add New Item</div>
+          <div class="mode-desc">Log a new near-expiry item for this week</div>
+        </div>
+        <span style="color:#ccc;font-size:18px">›</span>
+      </div>
+      <div class="mode-card mode-review" onclick="startReview()">
+        <div class="mode-icon purple">👁</div>
+        <div class="mode-info">
+          <div class="mode-title">Review</div>
+          <div class="mode-desc">View this week's submitted items and send email to buyer</div>
+        </div>
+        <span style="color:#ccc;font-size:18px">›</span>
+      </div>
+    </div>
+    <div style="height:4px"></div>
+    <button class="btn btn-ghost" onclick="closeModeSheet()">Cancel</button>
   </div>
 </div>
 
-<!-- RTC SHEET -->
+<!-- ══════════════ FOLLOW UP UPDATE POPUP ══════════════ -->
+<div class="overlay" id="fuUpdateOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Update Stock</div>
+    <div class="sheet-sub">Enter new stock count for this week</div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="field"><label>Article</label><input id="fuArticle" readonly></div>
+      <div class="field"><label>Description</label><input id="fuDesc" readonly></div>
+      <div class="field"><label>Expiry Date</label><input id="fuExpiry" readonly></div>
+      <div class="field"><label>Last Week Stock</label><input id="fuLastStock" readonly></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="field">
+        <label>New Stock Count (This Week)</label>
+        <input type="number" id="fuNewStock" placeholder="Enter new quantity…" min="0" style="font-size:18px;font-weight:700;color:var(--primary)">
+      </div>
+    </div>
+
+    <button class="btn btn-blue" id="fuSubmitBtn" onclick="submitFollowUp()">✓ &nbsp;Save &amp; Continue</button>
+    <button class="btn btn-ghost" onclick="closeFuUpdate()">Cancel</button>
+  </div>
+</div>
+
+<!-- ══════════════ REVIEW SHEET ══════════════ -->
+<div class="overlay" id="reviewOverlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Review</div>
+    <div class="sheet-sub" id="reviewSub">This week's submitted items</div>
+    <div class="notice"><span>📧</span><span>You can send the submission email to Buyer &amp; Area Manager from here.</span></div>
+    <div id="reviewSbox" class="sbox"></div>
+    <div id="reviewContent"><div class="spinner"><div class="ring"></div>Loading…</div></div>
+    <button class="btn btn-danger" id="sendEmailBtn" onclick="submitRTC()">Send Submission Email</button>
+    <button class="btn btn-ghost" onclick="closeReviewSheet()">Close</button>
+  </div>
+</div>
+
+<!-- ══════════════ RTC SHEET (legacy, kept for compatibility) ══════════════ -->
 <div class="overlay" id="rtcOverlay">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">RTC Submission</div>
     <div class="sheet-sub" id="rtcSub">Loading preview…</div>
-    <div class="notice">
-      <span>📧</span>
-      <span>Submission email will be sent to all configured Buyers &amp; Area Managers for this store.</span>
-    </div>
-    <div id="sbox" class="sbox"></div>
-    <div id="rtcContent"><div class="spinner"><div class="ring"></div>Fetching items…</div></div>
-    <button class="btn btn-danger" id="sendBtn" onclick="submitRTC()">Send Submission Email</button>
-    <button class="btn btn-ghost" onclick="closeRTC()">Cancel</button>
+    <div class="notice"><span>📧</span><span>Email will be sent to all configured Buyers &amp; Area Managers.</span></div>
+    <div id="rtcSbox" class="sbox"></div>
+    <div id="rtcContent"><div class="spinner"><div class="ring"></div>Fetching…</div></div>
+    <button class="btn btn-danger" id="rtcSendBtn" onclick="submitRTCFromSheet()">Send Submission Email</button>
+    <button class="btn btn-ghost" onclick="closeRTC()">Close</button>
   </div>
 </div>
 
-<!-- SCANNER -->
+<!-- ══════════════ SCANNER ══════════════ -->
 <div id="scanOverlay" class="overlay">
   <div class="scan-box">
     <video id="scanVideo"></video>
@@ -407,204 +375,433 @@ tr:nth-child(even) td { background: #fafafa; }
 
 <script>
 const API = "https://script.google.com/macros/s/AKfycbz7od2irkrwCRhtIpd7SmHVVvabI2RBakmWNds_Z5EaeJHzC_8BnWONAPRTAWl537YbTg/exec";
-let arts = [], rtcRows = [];
+let arts = [], rtcRows = [], fuCurrentItem = null;
 const zx = new ZXing.BrowserMultiFormatReader();
 
-/* TOAST */
+/* ══ TOAST ══ */
 function toast(msg, ms=2800){
   const el=document.getElementById("toast");
   el.textContent=msg; el.classList.add("show");
   setTimeout(()=>el.classList.remove("show"),ms);
 }
 
-/* INIT */
-window.onload=async()=>{
+/* ══ INIT ══ */
+window.onload = async () => {
   await loadStores();
   await loadArticles();
-  document.getElementById("articleInput").addEventListener("input",matchByArticle);
-  document.getElementById("barcodeInput").addEventListener("input",matchByBarcode);
+  document.getElementById("articleInput").addEventListener("input", matchByArticle);
+  document.getElementById("barcodeInput").addEventListener("input", matchByBarcode);
 };
 
-/* STORES */
+/* ══ STORES ══ */
 async function loadStores(){
   try{
-    const d=await(await fetch(API+"?action=stores")).json();
-    const sel=document.getElementById("storeSelect");
-    sel.innerHTML='<option value="">-- Select Store --</option>';
+    const d = await(await fetch(API+"?action=stores")).json();
+    const sel = document.getElementById("storeSelect");
+    sel.innerHTML = '<option value="">-- Select Store --</option>';
     d.forEach(s=>{const o=document.createElement("option");o.value=s[0];o.textContent=s[1];sel.appendChild(o);});
   }catch(e){toast("⚠ Could not load stores");}
 }
 
-/* ARTICLES */
+/* ══ ARTICLES ══ */
 async function loadArticles(){
   try{
-    const d=await(await fetch(API+"?action=articles")).json();
-    arts=d.map(a=>({article:String(a[0]),barcode:String(a[1]),desc:String(a[2]),dept:String(a[3]||"")}));
+    const d = await(await fetch(API+"?action=articles")).json();
+    arts = d.map(a=>({article:String(a[0]),barcode:String(a[1]),desc:String(a[2]),dept:String(a[3]||"")}));
   }catch(e){console.error(e);}
 }
 function fillDetails(m){
-  document.getElementById("barcodeInput").value=m.barcode;
-  document.getElementById("descInput").value=m.desc;
-  document.getElementById("deptInput").value=m.dept;
+  document.getElementById("barcodeInput").value = m.barcode;
+  document.getElementById("descInput").value    = m.desc;
+  document.getElementById("deptInput").value    = m.dept;
 }
 function matchByArticle(){
-  const m=arts.find(a=>a.article===document.getElementById("articleInput").value.trim());
-  if(m)fillDetails(m);
+  const m = arts.find(a=>a.article===document.getElementById("articleInput").value.trim());
+  if(m) fillDetails(m);
 }
 function matchByBarcode(){
-  const m=arts.find(a=>a.barcode===document.getElementById("barcodeInput").value.trim());
-  if(m){document.getElementById("articleInput").value=m.article;fillDetails(m);}
+  const m = arts.find(a=>a.barcode===document.getElementById("barcodeInput").value.trim());
+  if(m){document.getElementById("articleInput").value=m.article; fillDetails(m);}
 }
 
-/* NAV */
-function goToEntry(){
-  const s=document.getElementById("storeSelect");
-  const w=document.getElementById("weekSelect");
+/* ══ WEEK HELPERS ══ */
+function getStoreInfo(){
+  const s = document.getElementById("storeSelect");
+  const w = document.getElementById("weekSelect");
+  return {
+    storeCode: s.value,
+    storeName: s.options[s.selectedIndex].text,
+    week: w.value
+  };
+}
+
+// Returns { week, month } for the previous week using calendar logic
+function getPrevWeek(currentWeek, currentYM){
+  // currentWeek e.g. "Week 2 (8–14)"
+  // currentYM e.g. "2025-05"
+  const wMap = {
+    "Week 1 (1–7)":    { prev: "Week 4 (22–31)", samemonth: false },
+    "Week 2 (8–14)":   { prev: "Week 1 (1–7)",   samemonth: true  },
+    "Week 3 (15–21)":  { prev: "Week 2 (8–14)",  samemonth: true  },
+    "Week 4 (22–31)":  { prev: "Week 3 (15–21)", samemonth: true  }
+  };
+  const entry = wMap[currentWeek];
+  if(!entry) return null;
+  let ym = currentYM;
+  if(!entry.samemonth){
+    // Go to previous month
+    const [y,m] = currentYM.split("-").map(Number);
+    const prev = new Date(y, m-2, 1); // month is 0-indexed, m-1 is current, m-2 is prev
+    ym = prev.getFullYear()+"-"+String(prev.getMonth()+1).padStart(2,"0");
+  }
+  return { week: entry.prev, month: ym };
+}
+
+/* ══ NAVIGATION ══ */
+function goToModeSelect(){
+  const s = document.getElementById("storeSelect");
+  const w = document.getElementById("weekSelect");
   if(!s.value){toast("⚠ Select a store");return;}
   if(!w.value){toast("⚠ Select a week");return;}
-  document.getElementById("headerText").textContent=s.options[s.selectedIndex].text;
-  document.getElementById("storeBarName").textContent=s.options[s.selectedIndex].text;
-  document.getElementById("storeBarWeek").textContent=w.value;
-  document.getElementById("storePage").style.display="none";
-  document.getElementById("entryPage").style.display="block";
+  openModeSheet();
 }
+
+function openModeSheet(){
+  const s = document.getElementById("storeSelect");
+  const w = document.getElementById("weekSelect").value;
+  document.getElementById("modeSub").textContent =
+    s.options[s.selectedIndex].text + "  ·  " + w;
+  document.getElementById("modeOverlay").classList.add("open");
+}
+function closeModeSheet(){
+  document.getElementById("modeOverlay").classList.remove("open");
+}
+
+function setStoreBar(nameEl, weekEl){
+  const s = document.getElementById("storeSelect");
+  const w = document.getElementById("weekSelect").value;
+  document.getElementById(nameEl).textContent = s.options[s.selectedIndex].text;
+  document.getElementById(weekEl).textContent = w;
+}
+
+/* ══ MODE: ADD NEW ITEM ══ */
+function startAddNew(){
+  closeModeSheet();
+  const s = document.getElementById("storeSelect");
+  document.getElementById("headerText").textContent = s.options[s.selectedIndex].text;
+  setStoreBar("storeBarName","storeBarWeek");
+  document.getElementById("storePage").style.display  = "none";
+  document.getElementById("followUpPage").style.display = "none";
+  document.getElementById("entryPage").style.display  = "block";
+}
+
 function backToStore(){
-  document.getElementById("storePage").style.display="block";
-  document.getElementById("entryPage").style.display="none";
-  document.getElementById("headerText").textContent="Expiry Tracker";
+  document.getElementById("storePage").style.display  = "block";
+  document.getElementById("entryPage").style.display  = "none";
+  document.getElementById("followUpPage").style.display = "none";
+  document.getElementById("headerText").textContent = "Expiry Tracker";
 }
 
-/* SUBMIT ITEM */
-async function submitEntry(){
-  const s=document.getElementById("storeSelect");
-  const w=document.getElementById("weekSelect").value;
-  const desc=document.getElementById("descInput").value;
-  const stock=document.getElementById("stockInput").value;
-  const expiry=document.getElementById("expiryInput").value;
-  const btn=document.getElementById("submitItemBtn");
-  if(!desc||!stock||!expiry){toast("⚠ Complete all fields");return;}
-  btn.textContent="Submitting…";btn.disabled=true;
-  try{
-    await fetch(API,{
-      method:"POST",mode:"no-cors",
-      headers:{"Content-Type":"text/plain"},
-      body:JSON.stringify({
-        storeCode:s.value,
-        storeName:s.options[s.selectedIndex].text,
-        week:w,
-        article:document.getElementById("articleInput").value,
-        barcode:document.getElementById("barcodeInput").value,
-        description:desc,
-        department:document.getElementById("deptInput").value,
-        stock,expiry
-      })
-    });
-    toast("✅ Item submitted successfully");
-    ["articleInput","barcodeInput","descInput","deptInput","stockInput","expiryInput"]
-      .forEach(id=>document.getElementById(id).value="");
-    document.getElementById("articleInput").focus();
-  }catch(e){toast("❌ "+e.message);}
-  btn.innerHTML="✓ &nbsp;Submit Item";btn.disabled=false;
-}
+/* ══ MODE: FOLLOW UP ══ */
+async function startFollowUp(){
+  closeModeSheet();
+  const s   = document.getElementById("storeSelect");
+  const w   = document.getElementById("weekSelect").value;
+  const ym  = new Date().toISOString().slice(0,7);
+  const prev = getPrevWeek(w, ym);
 
-/* RTC PREVIEW */
-async function openRTC(){
-  const s=document.getElementById("storeSelect");
-  const w=document.getElementById("weekSelect").value;
-  document.getElementById("rtcOverlay").classList.add("open");
-  document.getElementById("rtcContent").innerHTML='<div class="spinner"><div class="ring"></div>Fetching items…</div>';
-  document.getElementById("rtcSub").textContent="Loading preview…";
-  document.getElementById("sbox").style.display="none";
-  document.getElementById("sendBtn").disabled=false;
-  document.getElementById("sendBtn").innerHTML="Send Submission Email";
-  document.getElementById("sendBtn").style.display="flex";
+  document.getElementById("headerText").textContent = s.options[s.selectedIndex].text;
+  setStoreBar("fuStoreName","fuWeekBadge");
+  document.getElementById("storePage").style.display    = "none";
+  document.getElementById("entryPage").style.display    = "none";
+  document.getElementById("followUpPage").style.display = "block";
 
-  const ym=new Date().toISOString().slice(0,7);
+  document.getElementById("fuLastWeekLabel").textContent =
+    prev ? "Last week: " + prev.week + " (" + prev.month + ")" : "No previous week";
+
+  document.getElementById("fuList").innerHTML =
+    '<div class="spinner"><div class="ring"></div>Loading last week data…</div>';
+
+  if(!prev){ document.getElementById("fuList").innerHTML='<div class="spinner">No previous week data available.</div>'; return; }
+
   try{
-    const d=await(await fetch(
-      `${API}?action=rtcPreview&storeCode=${encodeURIComponent(s.value)}&week=${encodeURIComponent(w)}&submissionMonth=${ym}`
-    )).json();
-    rtcRows=d.rows||[];
-    if(!rtcRows.length){
-      document.getElementById("rtcContent").innerHTML='<div class="spinner">No records found for this store / week / month.</div>';
-      document.getElementById("rtcSub").textContent="Nothing to submit";
-      document.getElementById("sendBtn").disabled=true;
-      return;
-    }
-    document.getElementById("rtcSub").textContent=`${rtcRows.length} item${rtcRows.length>1?"s":""} ready to submit`;
-    let html=`<div class="tbl-wrap"><table>
-      <thead><tr><th>Article</th><th>Description</th><th>Dept</th><th>Stock</th><th>Expiry</th></tr></thead><tbody>`;
-    rtcRows.forEach(x=>{
-      html+=`<tr><td>${x.Article}</td><td>${x.Description}</td><td>${x.Department||"—"}</td><td>${x.Stock}</td><td>${fmtDate(x.ExpiryDate)}</td></tr>`;
-    });
-    html+=`</tbody></table></div>`;
-    document.getElementById("rtcContent").innerHTML=html;
+    const url = API
+      +"?action=lastWeekData"
+      +"&storeCode="+encodeURIComponent(s.value)
+      +"&week="+encodeURIComponent(prev.week)
+      +"&submissionMonth="+encodeURIComponent(prev.month);
+    const d = await(await fetch(url)).json();
+    renderFuList(d.rows||[]);
   }catch(e){
-    document.getElementById("rtcContent").innerHTML=`<div class="spinner" style="color:#dc2626">Error: ${e.message}</div>`;
+    document.getElementById("fuList").innerHTML=`<div class="spinner" style="color:var(--danger)">Error: ${e.message}</div>`;
   }
 }
-function closeRTC(){document.getElementById("rtcOverlay").classList.remove("open");}
 
-/* SEND EMAIL via GET — no CORS issues */
+function renderFuList(rows){
+  if(!rows.length){
+    document.getElementById("fuList").innerHTML='<div class="spinner">No items found from last week.</div>';
+    return;
+  }
+  let html='<div class="fu-list">';
+  rows.forEach((r,i)=>{
+    html+=`<div class="fu-item" onclick="openFuUpdate(${i})">
+      <div class="fu-item-top">
+        <span class="fu-item-article">${r.Article} &nbsp;<span style="font-weight:400;color:var(--muted)">${r.Barcode||""}</span></span>
+        <span class="fu-item-stock">Stock: ${r.Stock}</span>
+      </div>
+      <div class="fu-item-desc">${r.Description}</div>
+      <div class="fu-item-expiry">📅 Expiry: ${fmtDate(r.ExpiryDate)} &nbsp;|&nbsp; Dept: ${r.Department||"—"}</div>
+    </div>`;
+  });
+  html+='</div>';
+  // store rows globally for access
+  window._fuRows = rows;
+  document.getElementById("fuList").innerHTML = html;
+}
+
+function openFuUpdate(idx){
+  const r = window._fuRows[idx];
+  fuCurrentItem = r;
+  document.getElementById("fuArticle").value   = r.Article + (r.Barcode?" ("+r.Barcode+")":"");
+  document.getElementById("fuDesc").value      = r.Description;
+  document.getElementById("fuExpiry").value    = fmtDate(r.ExpiryDate);
+  document.getElementById("fuLastStock").value = r.Stock;
+  document.getElementById("fuNewStock").value  = "";
+  document.getElementById("fuUpdateOverlay").classList.add("open");
+  setTimeout(()=>document.getElementById("fuNewStock").focus(),300);
+}
+function closeFuUpdate(){
+  document.getElementById("fuUpdateOverlay").classList.remove("open");
+  fuCurrentItem = null;
+}
+
+async function submitFollowUp(){
+  const newStock = document.getElementById("fuNewStock").value;
+  if(!newStock && newStock!=="0"){toast("⚠ Enter new stock count");return;}
+  if(!fuCurrentItem){toast("⚠ No item selected");return;}
+
+  const btn = document.getElementById("fuSubmitBtn");
+  btn.textContent="Saving…"; btn.disabled=true;
+
+  const s = document.getElementById("storeSelect");
+  const w = document.getElementById("weekSelect").value;
+
+  try{
+    await fetch(API,{
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"text/plain"},
+      body: JSON.stringify({
+        action:      "followUpUpdate",
+        storeCode:   s.value,
+        storeName:   s.options[s.selectedIndex].text,
+        week:        w,
+        article:     fuCurrentItem.Article,
+        barcode:     fuCurrentItem.Barcode||"",
+        description: fuCurrentItem.Description,
+        department:  fuCurrentItem.Department||"",
+        stock:       newStock,
+        expiry:      fuCurrentItem.ExpiryDate  // same expiry date
+      })
+    });
+    toast("✅ Stock updated for "+fuCurrentItem.Article);
+    closeFuUpdate();
+  }catch(e){toast("❌ "+e.message);}
+
+  btn.innerHTML="✓ &nbsp;Save &amp; Continue"; btn.disabled=false;
+}
+
+/* ══ MODE: REVIEW ══ */
+function startReview(){
+  closeModeSheet();
+  openReviewSheet();
+}
+
+async function openReviewSheet(){
+  document.getElementById("reviewOverlay").classList.add("open");
+  document.getElementById("reviewContent").innerHTML='<div class="spinner"><div class="ring"></div>Loading…</div>';
+  document.getElementById("reviewSub").textContent="Loading this week's items…";
+  document.getElementById("reviewSbox").style.display="none";
+  document.getElementById("sendEmailBtn").disabled=false;
+  document.getElementById("sendEmailBtn").style.display="flex";
+  document.getElementById("sendEmailBtn").innerHTML="Send Submission Email";
+
+  const s  = document.getElementById("storeSelect");
+  const w  = document.getElementById("weekSelect").value;
+  const ym = new Date().toISOString().slice(0,7);
+
+  try{
+    const d = await(await fetch(
+      `${API}?action=thisWeekReview&storeCode=${encodeURIComponent(s.value)}&week=${encodeURIComponent(w)}&submissionMonth=${ym}`
+    )).json();
+
+    rtcRows = d.rows||[];
+
+    if(!rtcRows.length){
+      document.getElementById("reviewContent").innerHTML='<div class="spinner">No items submitted this week yet.</div>';
+      document.getElementById("reviewSub").textContent="Nothing submitted this week";
+      document.getElementById("sendEmailBtn").disabled=true;
+      return;
+    }
+
+    document.getElementById("reviewSub").textContent =
+      `${rtcRows.length} item${rtcRows.length>1?"s":""} this week`;
+
+    renderReviewTable(rtcRows);
+
+  }catch(e){
+    document.getElementById("reviewContent").innerHTML=
+      `<div class="spinner" style="color:var(--danger)">Error: ${e.message}</div>`;
+  }
+}
+
+function renderReviewTable(rows){
+  let html=`<div class="tbl-wrap"><table>
+    <thead><tr>
+      <th>Article</th><th>Description</th><th>Dept</th>
+      <th>Stock</th><th>Expiry</th><th></th>
+    </tr></thead><tbody>`;
+  rows.forEach((x,i)=>{
+    html+=`<tr>
+      <td>${x.Article}</td><td>${x.Description}</td>
+      <td>${x.Department||"—"}</td><td>${x.Stock}</td>
+      <td>${fmtDate(x.ExpiryDate)}</td>
+      <td><button class="del-btn" onclick="deleteReviewRow(${x.RowIndex},${i})">✕ Del</button></td>
+    </tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  document.getElementById("reviewContent").innerHTML=html;
+}
+
+async function deleteReviewRow(rowIndex, arrIdx){
+  if(!confirm("Delete this item?")) return;
+  try{
+    const url = API
+      +"?action=deleteRow"
+      +"&rowIndex="+encodeURIComponent(rowIndex);
+    const result = await(await fetch(url)).json();
+    if(result.success){
+      rtcRows.splice(arrIdx,1);
+      toast("🗑 Row deleted");
+      if(!rtcRows.length){
+        document.getElementById("reviewContent").innerHTML='<div class="spinner">No items remaining.</div>';
+        document.getElementById("reviewSub").textContent="No items this week";
+        document.getElementById("sendEmailBtn").disabled=true;
+      } else {
+        document.getElementById("reviewSub").textContent =
+          `${rtcRows.length} item${rtcRows.length>1?"s":""} this week`;
+        renderReviewTable(rtcRows);
+      }
+    }else{
+      toast("❌ Delete failed: "+(result.message||"unknown error"));
+    }
+  }catch(e){toast("❌ "+e.message);}
+}
+
+function closeReviewSheet(){document.getElementById("reviewOverlay").classList.remove("open");}
+
+/* ══ SEND EMAIL (from Review sheet) ══ */
 async function submitRTC(){
   if(!rtcRows.length){toast("No data to submit");return;}
-  const s=document.getElementById("storeSelect");
-  const w=document.getElementById("weekSelect").value;
-  const btn=document.getElementById("sendBtn");
-  const box=document.getElementById("sbox");
-  btn.textContent="Sending…";btn.disabled=true;
-  document.getElementById("rtcContent").innerHTML='<div class="spinner"><div class="ring"></div>Sending email…</div>';
+  const s   = document.getElementById("storeSelect");
+  const w   = document.getElementById("weekSelect").value;
+  const btn = document.getElementById("sendEmailBtn");
+  const box = document.getElementById("reviewSbox");
+
+  btn.textContent="Sending…"; btn.disabled=true;
+  document.getElementById("reviewContent").innerHTML=
+    '<div class="spinner"><div class="ring"></div>Sending email…</div>';
   box.style.display="none";
-  const ym=new Date().toISOString().slice(0,7);
-  const url=API
+
+  const ym  = new Date().toISOString().slice(0,7);
+  const url = API
     +"?action=sendRTCEmail"
     +"&storeCode="+encodeURIComponent(s.value)
     +"&storeName="+encodeURIComponent(s.options[s.selectedIndex].text)
     +"&week="+encodeURIComponent(w)
     +"&submissionMonth="+encodeURIComponent(ym);
+
   try{
-    const result=await(await fetch(url)).json();
+    const result = await(await fetch(url)).json();
     if(result.success){
       box.className="sbox sbox-ok";
-      box.textContent="✅ Email sent";
+      box.textContent="✅ Email sent to: "+result.sentTo;
       box.style.display="block";
-      document.getElementById("rtcContent").innerHTML="";
-      document.getElementById("sendBtn").style.display="none";
+      document.getElementById("reviewContent").innerHTML="";
+      document.getElementById("sendEmailBtn").style.display="none";
       toast("✅ Submission email sent!",3500);
-      setTimeout(closeRTC,3000);
+      setTimeout(closeReviewSheet,3000);
     }else{
       box.className="sbox sbox-err";
       box.textContent="❌ "+(result.message||"Unknown error");
       box.style.display="block";
-      document.getElementById("rtcContent").innerHTML="";
-      btn.innerHTML="Retry";btn.disabled=false;
+      document.getElementById("reviewContent").innerHTML="";
+      btn.innerHTML="Retry"; btn.disabled=false;
     }
   }catch(e){
     box.className="sbox sbox-err";
     box.textContent="❌ Network error: "+e.message;
     box.style.display="block";
-    document.getElementById("rtcContent").innerHTML="";
-    btn.innerHTML="Retry";btn.disabled=false;
+    document.getElementById("reviewContent").innerHTML="";
+    btn.innerHTML="Retry"; btn.disabled=false;
   }
 }
 
-/* DATE FORMAT */
-function fmtDate(v){
-  if(!v)return"—";
-  const d=new Date(v);return isNaN(d)?v:d.toLocaleDateString("en-GB");
+/* kept for RTC overlay compatibility */
+function closeRTC(){document.getElementById("rtcOverlay").classList.remove("open");}
+async function submitRTCFromSheet(){ await submitRTC(); }
+
+/* ══ SUBMIT ITEM (Add New) ══ */
+async function submitEntry(){
+  const s     = document.getElementById("storeSelect");
+  const w     = document.getElementById("weekSelect").value;
+  const desc  = document.getElementById("descInput").value;
+  const stock = document.getElementById("stockInput").value;
+  const expiry= document.getElementById("expiryInput").value;
+  const btn   = document.getElementById("submitItemBtn");
+
+  if(!desc||!stock||!expiry){toast("⚠ Complete all fields");return;}
+  btn.textContent="Submitting…"; btn.disabled=true;
+
+  try{
+    await fetch(API,{
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"text/plain"},
+      body: JSON.stringify({
+        storeCode:   s.value,
+        storeName:   s.options[s.selectedIndex].text,
+        week:        w,
+        article:     document.getElementById("articleInput").value,
+        barcode:     document.getElementById("barcodeInput").value,
+        description: desc,
+        department:  document.getElementById("deptInput").value,
+        stock, expiry
+      })
+    });
+    toast("✅ Item submitted");
+    ["articleInput","barcodeInput","descInput","deptInput","stockInput","expiryInput"]
+      .forEach(id=>document.getElementById(id).value="");
+    document.getElementById("articleInput").focus();
+  }catch(e){toast("❌ "+e.message);}
+  btn.innerHTML="✓ &nbsp;Submit Item"; btn.disabled=false;
 }
 
-/* SCANNER */
+/* ══ DATE FORMAT ══ */
+function fmtDate(v){
+  if(!v)return"—";
+  const d=new Date(v); return isNaN(d)?v:d.toLocaleDateString("en-GB");
+}
+
+/* ══ SCANNER ══ */
 async function openScanner(){
   document.getElementById("scanOverlay").classList.add("open");
   try{
     await zx.decodeFromVideoDevice(null,"scanVideo",res=>{
       if(res){
         document.getElementById("barcodeInput").value=res.text;
-        matchByBarcode();closeScanner();toast("📷 Barcode scanned");
+        matchByBarcode(); closeScanner(); toast("📷 Barcode scanned");
       }
     });
-  }catch(e){toast("Camera error: "+e.message);closeScanner();}
+  }catch(e){toast("Camera: "+e.message);closeScanner();}
 }
 function closeScanner(){zx.reset();document.getElementById("scanOverlay").classList.remove("open");}
 </script>
