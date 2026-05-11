@@ -724,7 +724,7 @@ async function submitRTC(){
     const result = await(await fetch(url)).json();
     if(result.success){
       box.className="sbox sbox-ok";
-      box.textContent="✅ Email sent to: "+result.sentTo;
+      box.textContent="✅ Email sent";
       box.style.display="block";
       document.getElementById("reviewContent").innerHTML="";
       document.getElementById("sendEmailBtn").style.display="none";
