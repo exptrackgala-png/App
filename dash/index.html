@@ -746,19 +746,23 @@ input[type=checkbox]:checked::after { content:'✓'; position:absolute; top:-1px
           <div class="upload-status" id="adm-emailmap-status"></div>
         </div>
         <div class="upload-card" style="border-color:rgba(37,99,235,.25)">
-          <div class="upload-card-title" style="color:var(--accent)">🔌 API Status</div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            <code style="font-size:11px;background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;flex:1;word-break:break-all;font-family:var(--mono)">https://expiry-api.gala-it1.workers.dev/</code>
-            <button class="btn btn-sm" onclick="checkApiStatus()">Check</button>
-          </div>
-          <div class="upload-status" id="adm-api-status"></div>
-        </div>
-      </div>
-    </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
-</div><!-- /layout -->
+	           <!-- DATA MANAGEMENT SECTION -->
+        <div class="upload-card" style="border-color:var(--red-b); background:var(--red-l);">
+          <div class="upload-card-title" style="color:var(--red);">⚠️ Data Management</div>
+          <div class="upload-card-sub">Danger zone · Permanent deletion & Bulk Upload of ExpiryTracker records</div>
+          
+          <div class="upload-row" style="gap:10px; margin-bottom: 15px;">
+            <button class="btn btn-sm" style="background:var(--orange-l); color:var(--orange); border-color:var(--orange-b);" onclick="openDelModal('clearOldExpData')">Clear Data - Before 4 Months</button>
+            <button class="btn btn-sm btn-red" onclick="openDelModal('clearAllExpData')">Clear Data - All Exp Data</button>
+          </div>
+
+          <div class="upload-row" style="border-top: 1px solid var(--border); padding-top: 15px;">
+            <button class="btn btn-sm btn-import" onclick="document.getElementById('expdata-file').click()">⬆ Upload ExpiryTracker Data</button>
+            <input type="file" id="expdata-file" accept=".xlsx,.csv" style="display:none" onchange="importExpData(this)">
+          </div>
+          <div class="upload-status" id="adm-expdata-status" style="margin-top: 10px;"></div>
+        </div>
 
 <!-- ══ ITEM POPUP ══ -->
 <div class="overlay" id="popup-overlay" onclick="closePop(event)">
@@ -773,6 +777,7 @@ input[type=checkbox]:checked::after { content:'✓'; position:absolute; top:-1px
 </div>
 
 <!-- ══ ACTION CONFIRM ══ -->
+
 <div class="overlay" id="confirm-overlay">
   <div class="action-confirm">
     <div class="ac-header">
@@ -808,6 +813,29 @@ input[type=checkbox]:checked::after { content:'✓'; position:absolute; top:-1px
   </div>
 </div>
 
+<!-- ══ DELETE CONFIRMATION MODAL ══ -->
+<div class="overlay" id="del-overlay">
+  <div class="action-confirm" style="max-width:420px;">
+    <div class="ac-header">
+      <div class="ac-icon" id="del-icon">⚠️</div>
+      <div>
+        <h3 id="del-title">Confirm Deletion</h3>
+        <p id="del-desc">You are about to delete data. This action cannot be undone.</p>
+      </div>
+    </div>
+    <div class="ac-fields">
+      <div class="ac-field">
+        <div class="ac-field-label">Admin Key</div>
+        <input type="password" id="del-admin-key" class="ac-input" placeholder="Enter ADMIN_KEY to confirm">
+      </div>
+    </div>
+    <div class="ac-footer">
+      <button class="btn" onclick="closeDelModal()">Cancel</button>
+      <button class="btn btn-red" id="del-confirm-btn" onclick="executeDeletion()">Confirm Delete</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ ACTION TOOLBAR ══ -->
 <div class="action-toolbar" id="action-toolbar">
   <div class="action-toolbar-count"><strong id="sel-count">0</strong> selected</div>
@@ -825,7 +853,7 @@ input[type=checkbox]:checked::after { content:'✓'; position:absolute; top:-1px
 // ══════════════════════════════════════════
 //  CONFIG
 // ══════════════════════════════════════════
-const CF_API='https://expiry-api.gala-it1.workers.dev/';
+const CF_API='https://exptracker.galabonus.com';
 const ACTIONS=['RTC Price Change','Store Transfer','Monitor'];
 const MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const TODAY=new Date();TODAY.setHours(0,0,0,0);
@@ -1528,6 +1556,104 @@ async function checkApiStatus(){
 }
 
 loadAll();
+
+let currentDelAction = null;
+
+function openDelModal(action) {
+  currentDelAction = action;
+  document.getElementById('del-admin-key').value = '';
+  if (action === 'clearOldExpData') {
+    document.getElementById('del-title').innerText = 'Delete Data Older Than 4 Months';
+    document.getElementById('del-desc').innerHTML = 'This will permanently delete all entries in the ExpiryTracker older than 4 months.<br><br><b>Enter ADMIN_KEY to confirm.</b>';
+  } else {
+    document.getElementById('del-title').innerText = 'DELETE ALL EXPIRY DATA';
+    document.getElementById('del-desc').innerHTML = '<span style="color:var(--red); font-weight:bold;">WARNING:</span> This will permanently delete ALL entries in the ExpiryTracker table.<br><br><b>Enter ADMIN_KEY to confirm.</b>';
+  }
+  document.getElementById('del-overlay').classList.add('open');
+}
+
+function closeDelModal() {
+  document.getElementById('del-overlay').classList.remove('open');
+}
+
+async function executeDeletion() {
+  const adminKey = document.getElementById('del-admin-key').value.trim();
+  if (!adminKey) { 
+    alert('Please enter the ADMIN_KEY'); 
+    return; 
+  }
+  
+  const btn = document.getElementById('del-confirm-btn');
+  btn.innerText = 'Processing...';
+  btn.disabled = true;
+
+  try {
+    const response = await fetch(`${CF_API}/?action=${currentDelAction}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminKey })
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      alert('Success: ' + data.message);
+      closeDelModal();
+      loadAll(); // Refresh dashboard data
+    } else {
+      alert('Error: ' + (data.message || 'Unauthorized'));
+    }
+  } catch (err) {
+    alert('Network error occurred.');
+  } finally {
+    btn.innerText = 'Confirm Delete';
+    btn.disabled = false;
+  }
+}
+// ══════════════════════════════════════════
+//  BULK UPLOAD EXPIRY DATA LOGIC
+// ══════════════════════════════════════════
+async function importExpData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  const statusEl = document.getElementById('adm-expdata-status');
+  statusEl.className = 'upload-status show loading';
+  statusEl.innerText = 'Processing file...';
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: 'array', cellDates: true });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { raw: false });
+
+      if (!rows.length) {
+        throw new Error('No data found in file');
+      }
+
+      const res = await fetch(`${CF_API}/?action=uploadExpiryData`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminKey: ADMIN_KEY, rows })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        statusEl.className = 'upload-status show ok';
+        statusEl.innerText = `✅ Success! ${result.inserted} rows uploaded.`;
+        input.value = ''; // reset input
+        loadAll(); // refresh dashboard
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
+    } catch (err) {
+      statusEl.className = 'upload-status show err';
+      statusEl.innerText = '❌ Error: ' + err.message;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
 </script>
 </body>
 </html>
