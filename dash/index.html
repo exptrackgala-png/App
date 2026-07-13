@@ -16,7 +16,7 @@
   /* Cool neutral palette aligned with Dark Blue accent (Lightened) */
   --bg:            #f8fafd;
   --bg-tint:       #ffffff;
-  --surface:       rgba(255,255,255,0.80);
+  --surface:       rgba(255,255,255,0.85);
   --surface-solid: #ffffff;
   --surface2:      rgba(255,255,255,0.65);
   --surface3:      #f1f4f9;
@@ -26,7 +26,7 @@
 
   --text:          #1c1917;
   --t2:            #57534e;
-  --t3:            #76726f;
+  --t3:            #7d7875;
 
   /* Primary accent (Dark Blue) */
   --accent:        #222d65;
@@ -123,7 +123,7 @@ body::after {
   position: fixed; 
   top: 0; left: 0; bottom: 0;
   width:var(--sidebar-w); min-width:var(--sidebar-w); flex-shrink:0;
-  background:rgba(255,255,255,0.75);
+  background:rgba(255,255,255,0.85);
   backdrop-filter:blur(24px) saturate(1.6);
   -webkit-backdrop-filter:blur(24px) saturate(1.6);
   border-right:1px solid var(--border);
@@ -221,7 +221,7 @@ body::after {
 .topbar {
   position:sticky; top:0; z-index:50;
   height:var(--top-h);
-  background:rgba(255,255,255,0.80);
+  background:rgba(255,255,255,0.90);
   backdrop-filter:blur(18px) saturate(1.6);
   -webkit-backdrop-filter:blur(18px) saturate(1.6);
   border-bottom:1px solid var(--border);
@@ -237,7 +237,7 @@ body::after {
   display:inline-flex; align-items:center; gap:8px;
   padding:8px 13px; border-radius:9px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,0.8);
+  background:rgba(255,255,255,0.9);
   backdrop-filter:blur(8px);
   color:var(--t2);
   font-family:var(--sans); font-size:12px; font-weight:500;
@@ -257,7 +257,7 @@ body::after {
 .status-chip {
   display:inline-flex; align-items:center; gap:8px;
   padding:5px 11px; border-radius:20px;
-  background:rgba(255,255,255,0.80); backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.90); backdrop-filter:blur(10px);
   border:1px solid var(--border);
   font-size:11px; font-weight:500; color:var(--t2);
   box-shadow:var(--shadow-sm);
@@ -282,7 +282,7 @@ body::after {
   display:inline-flex; align-items:center; gap:6px;
   padding:7px 13px; border-radius:9px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   backdrop-filter:blur(6px);
   color:var(--t2);
   font-family:var(--sans); font-size:12px; font-weight:500;
@@ -313,9 +313,9 @@ body::after {
 .btn-ghost { background:transparent; border-color:transparent; color:var(--t2); }
 .btn-ghost:hover { background:rgba(28,25,23,0.05); border-color:var(--border); color:var(--text); transform:none; box-shadow:none; }
 
-.btn-sm { padding:7px 11px; font-size:11px; border-radius:7px; }
+.btn-sm { padding:7px 10px; font-size:11px; border-radius:7px; }
 .btn-import {
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   color:var(--accent); border-color:var(--accent-soft);
 }
 .btn-import:hover { background:var(--accent); color:#fff; }
@@ -332,7 +332,7 @@ body::after {
 /* ──────────────── MULTI-SELECT ──────────────── */
 .ms-container { position:relative; min-width:130px; }
 .ms-display {
-  background:rgba(255,255,255,0.90); border:1px solid var(--border);
+  background:rgba(255,255,255,0.95); border:1px solid var(--border);
   color:var(--text); border-radius:9px;
   padding:7px 28px 7px 11px;
   font-family:var(--sans); font-size:12px; cursor:pointer;
@@ -363,10 +363,10 @@ body::after {
 /* ──────────────── KPI CARDS ──────────────── */
 .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(135px,1fr)); gap:12px; margin-bottom:16px; }
 .kpi {
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   backdrop-filter:blur(16px) saturate(1.4);
   -webkit-backdrop-filter:blur(16px) saturate(1.4);
-  border:1px solid rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.9);
   outline:1px solid var(--border); outline-offset:-1px;
   border-radius:var(--r);
   padding:14px 16px;
@@ -404,10 +404,10 @@ body::after {
 
 /* ──────────────── PANELS ──────────────── */
 .panel {
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   backdrop-filter:blur(18px) saturate(1.4);
   -webkit-backdrop-filter:blur(18px) saturate(1.4);
-  border:1px solid rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.9);
   outline:1px solid var(--border); outline-offset:-1px;
   border-radius:var(--r);
   overflow:hidden;
@@ -420,7 +420,7 @@ body::after {
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
   gap:10px; flex-wrap:wrap;
-  background:rgba(255,255,255,0.50);
+  background:rgba(255,255,255,0.60);
 }
 .panel-title {
   font-family:var(--display);
@@ -438,9 +438,9 @@ body::after {
 .filter-bar {
   position: relative;
   z-index: 20; 
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   backdrop-filter:blur(16px) saturate(1.4);
-  border:1px solid rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.9);
   outline:1px solid var(--border); outline-offset:-1px;
   border-radius:var(--r);
   padding:14px 18px;
@@ -451,7 +451,7 @@ body::after {
 .fg { display:flex; flex-direction:column; gap:5px; }
 .fl { font-size:9.5px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; color:var(--t3); font-family:var(--sans); }
 .fs {
-  background:rgba(255,255,255,0.90); border:1px solid var(--border);
+  background:rgba(255,255,255,0.95); border:1px solid var(--border);
   color:var(--text); border-radius:9px;
   padding:7px 28px 7px 11px;
   font-family:var(--sans); font-size:12px; cursor:pointer; min-width:100px;
@@ -493,7 +493,7 @@ body::after {
 .ts { max-height:480px; overflow-y:auto; }
 table { width:100%; border-collapse:separate; border-spacing:0; font-size:12px; min-width:600px; }
 thead th {
-  background:rgba(241,244,249,0.90);
+  background:rgba(241,244,249,0.95);
   backdrop-filter:blur(8px);
   color:var(--t2); font-size:9.5px; font-weight:600;
   letter-spacing:.8px; text-transform:uppercase;
@@ -576,7 +576,7 @@ tbody td.r { text-align:right; }
 .wk-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:11px; }
 .wk-cell {
   padding:12px 11px; border-radius:11px;
-  background:rgba(255,255,255,0.80); border:1px solid var(--border);
+  background:rgba(255,255,255,0.95); border:1px solid var(--border);
   text-align:center;
   transition:transform .18s, box-shadow .18s;
 }
@@ -593,7 +593,7 @@ tbody td.r { text-align:right; }
 .sub-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(135px,1fr)); gap:11px; }
 .sub-card {
   padding:12px; border-radius:11px;
-  background:rgba(255,255,255,0.80); border:1px solid var(--border);
+  background:rgba(255,255,255,0.95); border:1px solid var(--border);
   transition:transform .18s, box-shadow .18s;
 }
 .sub-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
@@ -610,7 +610,7 @@ tbody td.r { text-align:right; }
 .action-toolbar {
   display:none; position:fixed; bottom:20px; left:50%;
   transform:translateX(-50%);
-  background:rgba(255,255,255,0.88); backdrop-filter:blur(22px) saturate(1.6);
+  background:rgba(255,255,255,0.95); backdrop-filter:blur(22px) saturate(1.6);
   -webkit-backdrop-filter:blur(22px) saturate(1.6);
   border:1px solid rgba(255,255,255,0.6);
   outline:1px solid var(--border); outline-offset:-1px;
@@ -665,7 +665,7 @@ tbody td.r { text-align:right; }
 @keyframes overlayFade { from { opacity:0; } to { opacity:1; } }
 
 .popup {
-  background:rgba(255,255,255,0.96);
+  background:rgba(255,255,255,0.98);
   backdrop-filter:blur(30px) saturate(1.6);
   -webkit-backdrop-filter:blur(30px) saturate(1.6);
   border:1px solid rgba(255,255,255,0.7);
@@ -697,7 +697,7 @@ tbody td.r { text-align:right; }
   font-family:var(--display);
   font-size:18px; font-weight:700; letter-spacing:-.4px; color:var(--text);
 }
-.popup-sub { font-size:13px; color:var(--t3); margin-top:1px; font-family:var(--mono); }
+.popup-sub { font-size:14px; color:var(--t3); margin-top:1px; font-family:var(--mono); }
 .popup-close {
   background:rgba(28,25,23,0.05); border:1px solid var(--border);
   color:var(--t2);
@@ -736,10 +736,10 @@ tbody td.r { text-align:right; }
 .art-store-card {
   margin-bottom:11px; border:1px solid var(--border);
   border-radius:11px; padding:13px 14px;
-  background:rgba(255,255,255,0.70);
+  background:rgba(255,255,255,0.80);
   transition:box-shadow .18s;
 }
-.art-store-card:hover { box-shadow:var(--shadow-sm); background:rgba(255,255,255,0.85); }
+.art-store-card:hover { box-shadow:var(--shadow-sm); background:rgba(255,255,255,0.95); }
 .art-store-head { display:flex; justify-content:space-between; margin-bottom:9px; align-items:center; gap:8px; flex-wrap:wrap; }
 .art-store-name { font-weight:600; font-size:12.5px; color:var(--text); }
 .art-store-latest { font-family:var(--mono); font-weight:700; color:var(--accent); font-size:12px; background:rgba(34,45,101,0.09); padding:3px 8px; border-radius:7px; }
@@ -806,7 +806,7 @@ tbody td.r { text-align:right; }
 }
 .ac-field-label span { font-size:9.5px; color:var(--t3); font-weight:500; text-transform:none; letter-spacing:0; }
 .ac-input {
-  width:100%; background:rgba(255,255,255,0.85);
+  width:100%; background:rgba(255,255,255,0.95);
   border:1px solid var(--border); border-radius:9px;
   padding:9px 13px;
   font-family:var(--mono); font-size:13px; color:var(--text);
@@ -815,7 +815,7 @@ tbody td.r { text-align:right; }
 .ac-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); background:#fff; }
 .ac-input-prefix {
   display:flex; align-items:stretch;
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   border:1px solid var(--border);
   border-radius:9px; overflow:hidden;
   transition:all .15s;
@@ -836,7 +836,7 @@ tbody td.r { text-align:right; }
   flex:1; min-width:0;
 }
 .ac-textarea {
-  width:100%; background:rgba(255,255,255,0.85);
+  width:100%; background:rgba(255,255,255,0.95);
   border:1px solid var(--border); border-radius:9px;
   padding:9px 13px;
   font-family:var(--mono); font-size:12px; color:var(--text);
@@ -875,7 +875,7 @@ tbody td.r { text-align:right; }
 .admin-lock p { font-size:12px; color:var(--t2); margin-bottom:24px; max-width:350px; line-height:1.5; }
 .admin-key-row { display:flex; gap:8px; width:100%; max-width:350px; }
 .admin-key-row input {
-  flex:1; background:rgba(255,255,255,0.9);
+  flex:1; background:rgba(255,255,255,0.95);
   border:1px solid var(--border); border-radius:9px;
   padding:10px 13px;
   font-family:var(--mono); font-size:12px; color:var(--text);
@@ -899,9 +899,9 @@ tbody td.r { text-align:right; }
 .admin-header-sub { font-size:11px; color:var(--t3); margin-top:2px; font-family:var(--mono); }
 
 .upload-card {
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.95);
   backdrop-filter:blur(16px) saturate(1.4);
-  border:1px solid rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.9);
   outline:1px solid var(--border); outline-offset:-1px;
   border-radius:13px;
   padding:18px; margin-bottom:13px;
@@ -972,7 +972,7 @@ input[type=checkbox]:checked::after {
 /* ──────────────── SEARCH ──────────────── */
 .search-wrap { position:relative; }
 .search-wrap input {
-  background:rgba(255,255,255,0.90); border:1px solid var(--border);
+  background:rgba(255,255,255,0.95); border:1px solid var(--border);
   border-radius:9px; padding:8px 14px 8px 36px;
   font-family:var(--sans); font-size:12px; color:var(--text);
   width:260px; outline:none; transition:all .15s; font-weight:500;
@@ -1326,7 +1326,16 @@ input[type=checkbox]:checked::after {
       </div>
       <div class="kpi-grid" id="kpi-sub"></div>
       <div class="panel">
-        <div class="panel-head"><div><div class="panel-title">Store Submission Status</div><div class="panel-title-sub">Green = submitted · Red = no submission found</div></div><span class="panel-badge" id="b-sub">—</span></div>
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Store Submission Status</div>
+            <div class="panel-title-sub">Green = submitted · Red = no submission found</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="panel-badge" id="b-sub">—</span>
+            <button class="btn btn-sm btn-accent" id="btn-remind" onclick="sendSubmissionReminders()"><i class="fa-solid fa-paper-plane"></i> Remind Not Submitted</button>
+          </div>
+        </div>
         <div class="panel-body"><div class="sub-grid" id="sub-grid"></div></div>
       </div>
     </div>
@@ -1611,7 +1620,11 @@ function calcBucket(d){
   if(d<=0)return'Expired';if(d<=7)return'<7 Days';if(d<=30)return'7–30 Days';if(d<=60)return'31–60 Days';if(d<=90)return'61–90 Days';return'>90 Days';
 }
 function bktCls(b){if(!b)return'na';if(b==='<7 Days'||b==='Expired')return'crit';if(b==='7–30 Days')return'high';if(b==='31–60 Days')return'med';return'low';}
-function KPI(label,cls,val,sub='',onclick=''){return`<div class="kpi ${cls}" ${onclick?`onclick="${onclick}" style="cursor:pointer;"`:''}><div class="kpi-label">${label}</div><div class="kpi-value">${typeof val==='number'?val.toLocaleString():val}</div>${sub?`<div class="kpi-sub">${sub}</div>`:''}</div>`;}
+
+function KPI(label,cls,val,sub='',onclick=''){
+  return `<div class="kpi ${cls}" ${onclick?`onclick="${onclick}" style="cursor:pointer;"`:''}><div class="kpi-label">${label}</div><div class="kpi-value">${typeof val==='number'?val.toLocaleString():val}</div>${sub?`<div class="kpi-sub">${sub}</div>`:''}</div>`;
+}
+
 function BR(label,val,max,color){const p=max>0?(val/max*100).toFixed(1):0;return`<div class="bar-row"><div class="bar-lbl" title="${label}">${label}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${color}"><span class="bar-val">${val}</span></div></div></div>`;}
 function daysBar(d){if(d===null)return'—';const clr=d<=7?'var(--red)':d<=30?'var(--orange)':d<=60?'var(--yellow)':'var(--green)';const pct=Math.min(100,Math.max(0,(d/90)*100));return`<div class="days-bar"><span style="font-family:var(--mono);color:${clr};font-weight:600;font-size:11px">${d}</span><div class="days-bar-track"><div class="days-bar-fill" style="width:${pct}%;background:${clr}"></div></div></div>`;}
 const F={le7:r=>r['Expiry Risk Bucket']==='<7 Days',le30:r=>['<7 Days','7–30 Days'].includes(r['Expiry Risk Bucket']),b7:r=>r['Expiry Risk Bucket']==='<7 Days',b30:r=>r['Expiry Risk Bucket']==='7–30 Days',b60:r=>r['Expiry Risk Bucket']==='31–60 Days',b90:r=>r['Expiry Risk Bucket']==='61–90 Days',pend:r=>r['Action Status']==='Pending Action',comp:r=>r['Action Status']==='Action Taken'};
@@ -1839,10 +1852,10 @@ function renderOverview(){
   document.getElementById('kpi-ov').innerHTML=
     KPI('Total Items','neu',d.length)+
     KPI('Total Stock','acc',ts)+
-    KPI('Critical ≤7 Days','red',cnt(d,F.le7),'Immediate RTC needed', `onclick="drillDownAction('risk', '<7 Days')"`) +
-    KPI('≤30 Days','ora',cnt(d,F.le30),'', `onclick="drillDownAction('risk', '7–30 Days')"`) + 
-    KPI('Pending Actions','ora',cnt(d,F.pend),'', `onclick="drillDownAction('status', 'Pending Action')"`) + 
-    KPI('Action Taken','grn',cnt(d,F.comp),'', `onclick="drillDownAction('status', 'Action Taken')"`);
+    KPI('Critical ≤7 Days','red',cnt(d,F.le7),'Immediate RTC needed', `drillDownAction('risk', '&lt;7 Days')`) +
+    KPI('≤30 Days','ora',cnt(d,F.le30),'', `drillDownAction('risk', '7–30 Days')`) + 
+    KPI('Pending Actions','ora',cnt(d,F.pend),'', `drillDownAction('status', 'Pending Action')`) + 
+    KPI('Action Taken','grn',cnt(d,F.comp),'', `drillDownAction('status', 'Action Taken')`);
   const sm={};
   d.forEach(r=>{
     const k=r.StoreCode||'?';
@@ -2011,7 +2024,6 @@ function renderTransferSuggestions() {
     const art = articleMap[key];
     art.expiring.forEach(exp => {
       for (const code in art.storeInfo) {
-        // Suggest if store is OOS (latestStock === 0) OR low/fast-moving (latestStock < 3)
         if (code !== exp.StoreCode && art.storeInfo[code].latestStock < 3) {
           suggestions.push({
             fromCode: exp.StoreCode,
@@ -2190,11 +2202,11 @@ function renderStores(){
   const ts=d.reduce((s,r)=>{const v=parseFloat(r.Stock);return s+(isNaN(v)||v<=0?1:v);},0);
   document.getElementById('kpi-sum').innerHTML=
     KPI('Total Stock','neu',ts)+
-    KPI('<7 Days','red',cnt(d,F.b7),'', `onclick="drillDownAction('risk', '<7 Days')"`) +
-    KPI('7–30 Days','ora',cnt(d,F.b30),'', `onclick="drillDownAction('risk', '7–30 Days')"`) +
-    KPI('31–60 Days','yel',cnt(d,F.b60),'', `onclick="drillDownAction('risk', '31–60 Days')"`) +
-    KPI('Pending','ora',cnt(d,F.pend),'', `onclick="drillDownAction('status', 'Pending Action')"`) +
-    KPI('Actioned','grn',cnt(d,F.comp),'', `onclick="drillDownAction('status', 'Action Taken')"`);
+    KPI('<7 Days','red',cnt(d,F.b7),'', `drillDownAction('risk', '&lt;7 Days')`) +
+    KPI('7–30 Days','ora',cnt(d,F.b30),'', `drillDownAction('risk', '7–30 Days')`) +
+    KPI('31–60 Days','yel',cnt(d,F.b60),'', `drillDownAction('risk', '31–60 Days')`) +
+    KPI('Pending','ora',cnt(d,F.pend),'', `drillDownAction('status', 'Pending Action')`) +
+    KPI('Actioned','grn',cnt(d,F.comp),'', `drillDownAction('status', 'Action Taken')`);
 
   buildActivePills('ss','ss-active-filters');
 
@@ -2203,7 +2215,7 @@ function renderStores(){
   document.getElementById('b-wk').textContent=allWeeks.length+' weeks';
   document.getElementById('wk-compare').innerHTML=wkTotals.map((w,i)=>{
     const prev=wkTotals[i-1];
-    const cls=prev?(w.count>prev.count?'up':w.count<prev.count?'dn':''):'';
+    const cls=prev?(w.count>prev.count?'up':w.count<prev.count?'dn':''):''; 
     const trend=prev?(w.count>prev.count?'↑ Rising':w.count<prev.count?'↓ Falling':'→ Same'):'First week';
     return`<div class="wk-cell ${cls}"><div class="wk-cell-lbl">${w.week}</div><div class="wk-cell-val">${w.count}</div><div class="wk-cell-trend">${trend}</div></div>`;
   }).join('');
@@ -2279,6 +2291,59 @@ function renderSubmission(){
     ...submitted.map(s=>{const items=d.filter(r=>r.StoreCode===s.code).length;return`<div class="sub-card ok"><div class="sub-code">${s.code}</div><div class="sub-name">${s.name||codeToStore[s.code]||'—'}</div><div class="sub-status"><i class="fa-solid fa-circle-check"></i> Submitted</div><div class="sub-items">${items} item${items!==1?'s':''}</div></div>`;}),
     ...missing.map(s=>`<div class="sub-card miss"><div class="sub-code">${s.code}</div><div class="sub-name">${s.name||codeToStore[s.code]||'—'}</div><div class="sub-status"><i class="fa-solid fa-circle-xmark"></i> Not Submitted</div><div class="sub-items">—</div></div>`)
   ].join('');
+}
+
+// ══ SUBMISSION REMINDERS ══
+async function sendSubmissionReminders() {
+  const ym = gv('sub-ym');
+  const week = gv('sub-week');
+  
+  let d = [...proc];
+  if(ym) d = d.filter(r => r['Submission Month'] === ym);
+  if(week) d = d.filter(r => r.Week === week);
+  
+  const submittedCodes = new Set(d.map(r => r.StoreCode).filter(Boolean));
+  const storeList = allStoreCodes.length > 0 ? allStoreCodes : Object.entries(codeToStore).map(([code, name]) => ({ code, name }));
+  const missing = storeList.filter(s => !submittedCodes.has(s.code)).map(s => s.code);
+  
+  if (missing.length === 0) {
+    toast('All stores have submitted!', 'success');
+    return;
+  }
+  
+  const btn = document.getElementById('btn-remind');
+  if(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+  }
+  
+  toast(`Sending reminders to ${missing.length} stores...`, '', 0);
+  
+  try {
+    const res = await fetch(CF_API + '?action=sendSubmissionReminders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        storeCodes: missing, 
+        week: week || 'Current Week', 
+        submissionMonth: ym || new Date().toISOString().slice(0,7) 
+      })
+    });
+    const out = await res.json();
+    
+    if (out.success) {
+      toast(out.message || 'Reminders sent successfully', 'success', 4000);
+    } else {
+      toast(out.message || 'Failed to send reminders', 'error');
+    }
+  } catch (err) {
+    toast('Network error sending reminders', 'error');
+  } finally {
+    if(btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Remind Not Submitted';
+    }
+  }
 }
 
 // ══ INSPECTOR ══
